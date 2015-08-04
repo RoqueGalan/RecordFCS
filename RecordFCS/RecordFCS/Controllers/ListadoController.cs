@@ -201,7 +201,7 @@ namespace RecordFCS.Controllers
 
                     //Basicos - FichaBasica
                     //saber cuales son los atributos basicos de cada pieza
-                    foreach (var grupo in listaPiezas.GroupBy(a => a.TipoPieza))
+                    foreach (var grupo in listaPiezas.GroupBy(a => a.TipoPieza).ToList())
                     {
                         IEnumerable<Atributo> listaAtributos = null;
                         var listaCampos = new List<itemPiezaGenericaCampo>();
