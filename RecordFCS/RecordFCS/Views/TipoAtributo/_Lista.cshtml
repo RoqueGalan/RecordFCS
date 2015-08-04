@@ -1,0 +1,118 @@
+﻿@model IEnumerable<RecordFCS.Models.TipoAtributo>
+@using RecordFCS.Helpers
+
+<p class="text-right">Total de Registros<span class="badge">@ViewBag.totalRegistros</span></p>
+
+<table class="table table-hover table-condensed">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+        <th>@Html.DisplayNameFor(model => model.NombreHTML)</th>
+        <th>@Html.DisplayNameFor(model => model.Descripcion)</th>
+        <th>@Html.DisplayNameFor(model => model.DatoHTML)</th>
+        <th>@Html.DisplayNameFor(model => model.DatoCS)</th>
+        <th>@Html.DisplayNameFor(model => model.Buscador)</th>
+        <th>@Html.DisplayNameFor(model => model.Status)</th>
+
+        <th>
+            @if (User.IsInRole("TipoAttCrear"))
+            {
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear", "Crear", "TipoAtributo", null, htmlAttributes: new { data_modal = "", @class = "btn btn-success pull-right TipoAtributo" })
+            }
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+            <td>@Html.DisplayFor(modelItem => item.NombreHTML)</td>
+            <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+            <td>@Html.DisplayFor(modelItem => item.DatoHTML)</td>
+            <td>@Html.DisplayFor(modelItem => item.DatoCS)</td>
+            <th>@Html.DisplayFor(modelItem => item.Buscador)</th>
+            <td>@Html.DisplayFor(modelItem => item.Status)</td>
+
+            <td>
+                <div class="pull-right">
+                    @if (User.IsInRole("CatConfig"))
+                    {
+                        if (item.EsLista)
+                        {
+                            switch (item.NombreID)
+                            {
+                                case "Generico":
+                                    @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Config. Catálogo de " + item.Nombre, "Detalles", "TipoAtributo", routeValues: new { id = item.TipoAtributoID }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+                                    break;
+                                case "Medida":
+                                @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Config. Catálogo de Tipo de Medida", "Index", "TipoMedida", htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+                                    break;
+                                case "TipoPieza":
+                                @*@Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Config. Catálogo de Tipo Pieza", "Index", "TipoObra", htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })*@
+                                    break;
+                                default:
+                                @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Config. Catálogo de " + item.Nombre, "Index", item.NombreID, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+                                    break;
+                            }
+                        }
+                    }
+                    @if (User.IsInRole("TipoAttEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "TipoAtributo", routeValues: new { id = item.TipoAtributoID }, htmlAttributes: new { data_toggle = "tooltip", data_modal = "", @class = "btn btn-default btn-xs TipoAtributo" })
+                    }
+                    @if (User.IsInRole("TipoAttEliminar"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "TipoAtributo", routeValues: new { id = item.TipoAtributoID }, htmlAttributes: new { data_toggle = "tooltip", data_modal = "", @class = "btn btn-danger btn-xs TipoAtributo" })
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@* ! @Script.Render is not supported in partials - for extensions see: http://stackoverflow.com/a/13765578/209259
+    @Scripts.Render("~/bundles/modalform")
+*@
+
+<script type="text/javascript">
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("a[data-modal].TipoAtributo").on("click", function (e) {
+            // hide dropdown if any (this is used wehen invoking modal from link in bootstrap dropdown )
+            //$(e.target).closest('.btn-group').children('.dropdown-toggle').dropdown('toggle');
+            $('#myModalContent').load(this.href, function () {
+                $('#myModal').modal({
+                    /*backdrop: 'static',*/
+                    keyboard: true
+                }, 'show');
+                bindForm_TipoAtributo(this);
+            });
+            return false;
+        });
+    });
+
+    function bindForm_TipoAtributo(dialog) {
+        $('form', dialog).submit(function () {
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    if (result.success) {
+                        $('#myModal').modal('hide');
+                        $('#renderListaTipoAtributo').load(result.url); //  Campo que actualizara
+                        $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                    } else {
+                        $('#myModalContent').html(result);
+                        $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+                        bindForm_TipoAtributo(dialog);
+                    }
+                }
+            });
+            return false;
+        });
+    }
+</script>

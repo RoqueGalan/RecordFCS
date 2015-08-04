@@ -1,0 +1,21 @@
+﻿@model RecordFCS.Models.Medida
+
+<div class="form-inline">
+    @Html.EditorFor(model => model.Largo, new { htmlAttributes = new { @Placeholder = "-Largo-", @class = "form-control medidaTam" } })
+    x
+    @Html.EditorFor(model => model.Ancho, new { htmlAttributes = new { @Placeholder = "-Ancho-", @class = "form-control form-inline medidaTam" } })
+    x
+    @Html.EditorFor(model => model.Profundidad, new { htmlAttributes = new { @Placeholder = "-Profundidad-", @class = "form-control medidaTam" } })
+    x
+    @Html.EditorFor(model => model.Diametro, new { htmlAttributes = new { @Placeholder = "-Diametro-", @class = "form-control medidaTam" } })
+    Ø
+    @Html.EditorFor(model => model.Diametro2, new { htmlAttributes = new { @Placeholder = "-Diametro2-", @class = "form-control medidaTam" } })
+    Ø
+    @Html.EnumDropDownListFor(model => model.UMLongitud, htmlAttributes: new { @Placeholder = "-UMLongitud-", @class = "form-control medidaTam" })
+    -
+    @Html.EditorFor(model => model.Peso, new { htmlAttributes = new { @Placeholder = "-Peso-", @class = "form-control medidaTam" } })
+
+    @Html.EnumDropDownListFor(model => model.UMMasa, htmlAttributes: new { @Placeholder = "-UMMasa-", @class = "form-control medidaTam" })
+</div>
+
+

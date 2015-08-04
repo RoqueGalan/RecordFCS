@@ -1,0 +1,39 @@
+﻿@model IEnumerable<RecordFCS.Models.TipoAtributo>
+@using RecordFCS.Helpers
+
+
+@{
+    ViewBag.Title = "Tipos de Atributo";
+}
+
+<h1>
+    <b>CATALOGO</b>
+    <i>@ViewBag.Title</i>
+</h1>
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li class="active">@ViewBag.Title</li>
+</ol>
+
+
+<!-- Campo que se reemplaza-->
+<div id="renderListaTipoAtributo">
+    @{ Html.RenderAction("Lista", "TipoAtributo"); }
+</div>
+
+
+<!-- modal placeholder-->
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

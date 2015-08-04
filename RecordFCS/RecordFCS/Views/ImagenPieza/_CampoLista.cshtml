@@ -1,0 +1,26 @@
+﻿@using RecordFCS.Helpers
+
+<script type="text/javascript" src="~/Scripts/bootstrap-filestyle.min.js"></script>
+@{
+    string nombreLista = "req_list_" + ViewBag.TipoAtributoID;
+    string pref = "imagen_";
+}
+<div class="col-md-12">
+    <div id="renderLista_@ViewBag.TipoAtributoID">
+        @Html.Hidden(nombreLista, 0)
+        <div class="input-group">
+            @Html.TextBox(pref + "Titulo", null, new { @class = "form-control", required = "required", placeholder = "Titulo de la Foto" })
+            <span class="input-group-addon"></span>
+            @Html.TextBox(pref + "Descripcion", null, new { @class = "form-control", placeholder = "Descripción de la Foto" })
+        </div>
+        <input type="file"
+               id="FileName"
+               name="FileName"
+               class="filestyle"
+               data-buttontext="Buscar Imagen"
+               data-buttonbefore="true"
+               data-buttonname="btn-black"
+               required>
+    </div>
+</div>
+

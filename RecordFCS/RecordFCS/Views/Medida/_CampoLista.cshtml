@@ -1,0 +1,27 @@
+﻿@using RecordFCS.Helpers
+
+@{
+    string nombreLista = "req_list_" + ViewBag.TipoAtributoID;
+    string pref = "med_";
+}
+
+<div class="col-md-12">
+    <div id="renderLista_@ViewBag.TipoAtributoID">
+        @Html.DropDownList(nombreLista, null, "- SELECCIONA UNA OPCION -", htmlAttributes: new { id = @nombreLista, name = @nombreLista, @class = "form-control", required = "required" })
+
+        <div class="input-group">
+            @Html.TextBox(pref + "Largo", null, new { type = "number", step = "any", @class = "form-control", required = "required", placeholder = "Alto" })
+            <span class="input-group-addon"><i class="fa fa-arrows-v"></i></span>
+            @Html.TextBox(pref + "Ancho", null, new { type = "number", step = "any", @class = "form-control", required = "required", placeholder = "Ancho" })
+            <span class="input-group-addon"><i class="fa fa-arrows-h"></i></span>
+            @Html.TextBox(pref + "Profundidad", null, new { type = "number", step = "any", @class = "form-control", placeholder = "Profund" })
+            <span class="input-group-addon"><i class="fa fa-arrows-alt"></i></span>
+            @Html.TextBox(pref + "Diametro", null, new { type = "number", step = "any", @class = "form-control", placeholder = "Diam" })
+            <span class="input-group-addon"><i class="fa fa-adjust"></i></span>
+            @Html.TextBox(pref + "Diametro2", null, new { type = "number", step = "any", @class = "form-control", placeholder = "Diam2" })
+            <span class="input-group-addon"><i class="fa fa-adjust"></i></span>
+            @Html.DropDownList(pref + "UMLongitud", null, "- SELECCIONA UNA OPCION -", htmlAttributes: new { id = "med_UMLongitud", name = "med_UMLongitud", @class = "form-control", required = "required" })
+        </div>
+
+    </div>
+</div>

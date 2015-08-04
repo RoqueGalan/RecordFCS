@@ -1,0 +1,214 @@
+﻿@using RecordFCS.Models.ViewsModel
+@using RecordFCS.Helpers
+
+@{
+    ViewBag.PagName = "Reporte";
+    ViewBag.CtrlName = ViewBag.Titulo;
+    ViewBag.Title = ViewBag.PagName + " " + ViewBag.CtrlName;
+}
+
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>R E P O R T E</b>
+        <i class="text-muted text-uppercase">@ViewBag.Titulo</i>
+    </h4>
+</div>
+
+<div class="modal-body">
+    @if (ViewBag.Soportado == "si")
+    {
+        @*<p>
+                <ul>
+                    <li>Total de Obras <b>@ViewBag.TotalObras</b></li>
+                    <li>Obras Obligatorias <b>@ViewBag.ObrasMaestrasObligatorias</b></li>
+                </ul>
+            </p>*@
+
+
+        <div class="row">
+            <table class="table table-condensed table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            Obras por
+                            <span class="text-lowercase">@ViewBag.Titulo</span>
+                            <span id="Listado-1" class="btn btn-primary btn-xs labelbtnMostrar"><i class="fa fa-caret-down "></i></span>
+                        </th>
+                        <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Cantidad</th>
+                        <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2">%</th>
+                    </tr>
+                </thead>
+                <tbody id="TablaListado-1">
+                    @foreach (var item in ViewBag.listaMaestra as List<ItemReporteBasico>)
+                    {
+                        <tr>
+                            <td>@item.Nombre</td>
+                            <td>@item.Cantidad</td>
+                            <td>@item.Porcentaje<span>%</span></td>
+                        </tr>
+                    }
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td class="text-right"><h5>SubTotal</h5></td>
+                        <td><h5><b>@ViewBag.ObrasMaestrasSubTotal</b></h5></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row">
+            <table class="table table-condensed table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            Obras en
+                            <span class="text-lowercase">comodato</span>
+                            <span id="Listado-2" class="btn btn-primary btn-xs labelbtnMostrar"><i class="fa fa-caret-down "></i></span>
+                        </th>
+                        <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Cantidad</th>
+                        <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2">%</th>
+                    </tr>
+                </thead>
+                <tbody id="TablaListado-2">
+                    @foreach (var item in ViewBag.listaMaestraComodato as List<ItemReporteBasico>)
+                    {
+                        <tr>
+                            <td>@item.Nombre</td>
+                            <td>@item.Cantidad</td>
+                            <td>@item.Porcentaje<span>%</span></td>
+                        </tr>
+                    }
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td class="text-right"><h5>SubTotal</h5></td>
+                        <td><h5><b>@ViewBag.ObrasMaestrasSubTotalComodato</b></h5></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <div class="row">
+            <table class="table table-condensed table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
+                            Obras en
+                            <span class="text-lowercase">Baja</span>
+                            <span id="Listado-3" class="btn btn-primary btn-xs labelbtnMostrar"><i class="fa fa-caret-down "></i></span>
+                        </th>
+                        <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2">Cantidad</th>
+                        <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2">%</th>
+                    </tr>
+                </thead>
+                <tbody id="TablaListado-3">
+                    @foreach (var item in ViewBag.listaMaestraInactiva as List<ItemReporteBasico>)
+                    {
+                        <tr>
+                            <td>@item.Nombre</td>
+                            <td>@item.Cantidad</td>
+                            <td>@item.Porcentaje<span>%</span></td>
+                        </tr>
+                    }
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td class="text-right"><h5>SubTotal</h5></td>
+                        <td><h5><b>@ViewBag.ObrasMaestrasSubTotalInactiva</b></h5></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><h5><b>TOTAL</b></h5></td>
+                        <td><h5><b>@ViewBag.Total</b></h5></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <div class="row">
+            <div class="alert alert-default">
+                <b>
+                    Obras sin campo
+                    <span class="text-lowercase">@ViewBag.Titulo</span>
+                </b>
+                <span id="Listado-4" class="btn btn-primary btn-xs labelbtnMostrar"><i class="fa fa-caret-down "></i></span>
+            </div>
+
+            <table id="TablaListado-4" class="table table-condensed table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-lg-2 col-md-2 col-sm-2 col-xs-2">No. Inventario Obra</th>
+                        <th class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                            Título
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in ViewBag.listaObraSinCampo as List<ObraReporteBasico>)
+                    {
+                        <tr>
+                            <td>
+                                @*@if (User.IsInRole("ObraFichComplet"))*@
+                                @Html.ActionLink(item.Clave, "Detalles", "Obra", new { id = item.ObraID }, null)
+                            </td>
+                            <td>@item.Titulo</td>
+                        </tr>
+                    }
+
+                    <tr>
+                        <td><b>Total</b></td>
+                        <td><b>@ViewBag.ObraMaestraSubTotalObraSinCampo</b></td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>Muestra solo los primeros 500 elementos</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <script type="text/javascript">
+
+            $(function () {
+                $.ajaxSetup({ cache: false });
+
+                $('#TablaListado-1').toggle();
+                $('#TablaListado-2').toggle();
+                $('#TablaListado-3').toggle();
+                $('#TablaListado-4').toggle();
+
+                $(".labelbtnMostrar").on("click", function (e) {
+
+                    var id = $(this).attr('id');
+                    $('#Tabla' + id).toggle();
+                    return false;
+                });
+            });
+        </script>
+
+    }
+    else
+    {
+        <div>
+            <h1>@ViewBag.Titulo</h1>
+            <h4>No es soportado para un reporte</h4>
+        </div>
+    }
+
+</div>
+
+<div class="modal-footer">
+    <button class="btn" type="button" data-dismiss="modal">Cerrar</button>
+</div>

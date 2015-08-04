@@ -1,0 +1,238 @@
+﻿@using RecordFCS.Models
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="well text-center">
+    <h1><b>MIGRACIÓN</b></h1>
+    <h3>[<b>RECORD MS</b>] => [<b>RECORD FCS</b>]</h3>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-inverse">
+
+            <div class="panel-heading text-center">TABLAS DE MIGRACION</div>
+
+            <ul class="list-group nav nav-pills nav-stacked">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b>CATALOGOS CON TABLA </b><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="">@Html.ActionLink("Catalogo Autores", "ImportarCat_Autor", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Catalogo Catalogos", "ImportarCat_Catalogo", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Catalogo Colecciones", "ImportarCat_Coleccion", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Catalogo Matriculas Tecnicas", "ImportarCat_Tecnica", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Catalogo Matriculas", "ImportarCat_Matricula", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Catalogo Propietarios", "ImportarCat_Propietario", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Catalogo Tipo de Adquisicion", "ImportarCat_TipoAdquisicion", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Catalogo Ubicacion", "ImportarCat_Ubicacion", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Catalogo Exposiciones", "ImportarCat_Exposicion", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Catalogo Tipo de Medidas", "ImportarMedida_TipoMedida", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Catalogo Tecnica Marcos", "ImportarCat_TecnicaMarco", "Migracion", null, new { @Class = "migracion" })</li>
+
+                    </ul>
+                </li>
+
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b>CATALOGOS GENERICOS</b><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="">@Html.ActionLink("Casa Comercial", "ImportarCat_Generico", "Migracion", new { NombreHTML = "CasaComercialID" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Estado de Conservacion", "ImportarCat_Generico", "Migracion", new { NombreHTML = "EstadoConservacionID" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Escuela Artistica", "ImportarCat_Generico", "Migracion", new { NombreHTML = "EscuelaArtisticaID" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Fecha de Ejecucion", "ImportarCat_Generico", "Migracion", new { NombreHTML = "FechaEjecucionID" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Filiacion Estilistica", "ImportarCat_Generico", "Migracion", new { NombreHTML = "FiliacionEstilisticaID" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Forma de Adquisicion", "ImportarCat_Generico", "Migracion", new { NombreHTML = "FormaAdquisicionID" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Procedencia", "ImportarCat_Generico", "Migracion", new { NombreHTML = "ProcedenciaID" }, new { @Class = "migracion" })</li>
+                    </ul>
+                </li>
+
+
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b>CONFIGURACION DE OBRAS</b><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="">@Html.ActionLink("Tipo Obra (Maestra Vacia)", "ImportarCat_TipoObra", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Modificar Tipos Obras Atributos (Final)", "ModificarTiposObrasAtt", "Migracion", null, new { @Class = "migracion" })</li>
+
+                        
+                    </ul>
+                </li>
+
+
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b>MIGRACION DE OBRAS DATOS BASICOS</b><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="">@Html.ActionLink("Registro Basico [Tabla Obra]", "ImportarObras_Obra", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Registro Pieza Descriptivo [Tabla Pieza]", "ImportarPieza_Descriptivo", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Registro Pieza Descriptivo [Tabla Pieza] ALTERNATIVO", "ImportarPieza_Descriptivo_alternativo", "Migracion", null, new { @Class = "migracion" })</li>
+
+                        <li class="divider"></li>
+                        <li class="">@Html.ActionLink("AUTOR - PIEZA", "ImportarPieza_Autor", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("CATALOGO - PIEZA", "ImportarPieza_Catalogo", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("EXPOSICION - PIEZA", "ImportarPieza_Exposicion", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("MATRICULA - PIEZA", "ImportarPieza_Matricula", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("TECNICA - PIEZA", "ImportarPieza_Tecnica", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("TECNICA MARCO - PIEZA", "ImportarPieza_TecnicaMarco", "Migracion", null, new { @Class = "migracion" })</li>
+                        
+                        <li class="divider"></li>
+                        <li class="">@Html.ActionLink("TITULO - PIEZA", "ImportarPieza_Titulo", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("MATERIALES - PIEZA", "ImportarPieza_Materiales", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("DESCRIPCION - PIEZA", "ImportarPieza_Descripcion", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("CATALOGO TEXT - PIEZA", "ImportarPieza_CatalogoText", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("NUMERO DE CATALOGO - PIEZA", "ImportarPieza_NumeroCatalogo", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("NUMERO DE REGISTRO - PIEZA", "ImportarPieza_NumeroRegistro", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("TITULO ORIGINAL - PIEZA", "ImportarPieza_TituloOriginal", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("PROCEDENCIA TEXT - PIEZA", "ImportarPieza_ProcedenciaText", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("ESCUELA ARTISTICA - PIEZA", "ImportarPieza_EscuelaArtistica", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("FORMA DE ADQUISICION - PIEZA", "ImportarPieza_FormaAdquisicion", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("PROCEDENCIA - PIEZA", "ImportarPieza_Procedencia", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("FILIACION ESTILISTICA - PIEZA", "ImportarPieza_FiliacionEstilistica", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("CASA COMERCIAL - PIEZA", "ImportarPieza_CasaComercial", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("ESTADO DE CONSERVACION - PIEZA", "ImportarPieza_EdoConservacion", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="divider"></li>
+                        <li class="">@Html.ActionLink("FECHA EJECUCION - PIEZA", "ImportarPieza_FechaEjecucion", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("FECHA EJECUCION TEXT - PIEZA", "ImportarPieza_FechaEjecucionText", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("OTROS TITULOS - PIEZA", "ImportarPieza_otros_titulos", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("MARCAS E INSCRIPCIONES - PIEZA", "ImportarPieza_marcas_inscripciones", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("MARCAS - PIEZA", "ImportarPieza_marcas", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("OBSERVACIONES - PIEZA", "ImportarPieza_Observaciones", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("BIBLIOGRAFIA - PIEZA", "ImportarPieza_bibliografia", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("ASESORES - PIEZA", "ImportarPieza_asesores", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="divider"></li>
+                        <li class="">@Html.ActionLink("IMAGENES - PIEZA", "ImportarPieza_Imagenes", "Migracion", null, new { @Class = "migracion" })</li>
+
+
+                        <li class="divider"></li>
+                        <li class="">@Html.ActionLink("PRUEBA DE CARGA", "PruebaCarga", "Migracion", null, new { @Class = "migracion" })</li>
+                    </ul>
+                </li>
+
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b>MIGRACION DE OBRAS BILLETES</b><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="">@Html.ActionLink("INICIALES - PIEZA - BILLETE", "ImportarPieza_bi_inic", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("NOMBRE BANCO - PIEZA - BILLETE", "ImportarPieza_bi_para", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("RELACION GEOGRAFICA - PIEZA - BILLETE", "ImportarPieza_bi_geo", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("DENOMINACION - PIEZA - BILLETE", "ImportarPieza_bi_tipodocto", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("FECHAS AGREGADAS - PIEZA - BILLETE", "ImportarPieza_bi_fechadd", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("FECHAS APROXIMADAS - PIEZA - BILLETE", "ImportarPieza_bi_fechaprox", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("ANVERSO INSCRIPCIONES - PIEZA - BILLETE", "ImportarPieza_bi_inscanv", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("REVERSO INSCRIPCIONES - PIEZA - BILLETE", "ImportarPieza_bi_inscrev", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("OTROS AUTORES - PIEZA - BILLETE", "ImportarPieza_bi_otrosaut", "Migracion", null, new { @Class = "migracion" })</li>
+
+
+
+                    </ul>
+                </li>
+
+                
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b>MIGRACION DE OBRAS MONEDAS</b><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="">@Html.ActionLink("EPOCA - PIEZA - MONEDA", "ImportarPieza_Monedas", "Migracion", new { nombreCampo = "Mon_Epoca", nombreAtt = "Mon_Epoca" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("LEY - PIEZA - MONEDA", "ImportarPieza_Monedas", "Migracion", new { nombreCampo = "Mon_Ley", nombreAtt = "Mon_Ley" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("CECA - PIEZA - MONEDA", "ImportarPieza_Monedas", "Migracion", new { nombreCampo = "Mon_Ceca", nombreAtt = "Mon_Ceca" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("CANTO - PIEZA - MONEDA", "ImportarPieza_Monedas", "Migracion", new { nombreCampo = "Mon_Canto", nombreAtt = "Mon_Canto" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("TIPO - PIEZA - MONEDA", "ImportarPieza_Monedas", "Migracion", new { nombreCampo = "Mon_Tipo", nombreAtt = "Mon_Tipo" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("GIRO - PIEZA - MONEDA", "ImportarPieza_Monedas", "Migracion", new { nombreCampo = "Mon_Giro", nombreAtt = "Mon_Giro" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("ANVERSO Descripcion - PIEZA - MONEDA", "ImportarPieza_Monedas", "Migracion", new { nombreCampo = "Mon_DAnv", nombreAtt = "Mon_DAnv" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Anverso Inscripciones - PIEZA - MONEDA", "ImportarPieza_Monedas", "Migracion", new { nombreCampo = "Mon_LAnv", nombreAtt = "Mon_LAnv,bi_inscanv" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Anverso Iniciales - PIEZA - MONEDA", "ImportarPieza_Monedas", "Migracion", new { nombreCampo = "Mon_IAnv", nombreAtt = "Mon_IAnv" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Reverso Descripción - PIEZA - MONEDA", "ImportarPieza_Monedas", "Migracion", new { nombreCampo = "Mon_DRev", nombreAtt = "Mon_DRev" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Reverso - PIEZA - MONEDA", "ImportarPieza_Monedas", "Migracion", new { nombreCampo = "Mon_Reve", nombreAtt = "Mon_Reve" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Anverso - PIEZA - MONEDA", "ImportarPieza_Monedas", "Migracion", new { nombreCampo = "Mon_Anve", nombreAtt = "Mon_Anve" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Reverso Inscripciones - PIEZA - MONEDA", "ImportarPieza_Monedas", "Migracion", new { nombreCampo = "Mon_LRev", nombreAtt = "Mon_LRev,bi_inscrev" }, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("Reverso Iniciales - PIEZA - MONEDA", "ImportarPieza_Monedas", "Migracion", new { nombreCampo = "Mon_IRev", nombreAtt = "Mon_IRev" }, new { @Class = "migracion" })</li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b>MEDIDAS</b><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="">@Html.ActionLink("MEDIDA SIN MARCO O BASE", "ImportarMedida_SinMarcoBase", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("MEDIDA MUSEOGRAFICA", "ImportarMedida_Museograficas", "Migracion", null, new { @Class = "migracion" })</li>
+                        <li class="">@Html.ActionLink("MEDIDA MARCO", "ImportarMedida_Marcos", "Migracion", null, new { @Class = "migracion" })</li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><b>OTRAS PIEZAS</b><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li class="">@Html.ActionLink("OTRAS PIEZAS", "ImportarOtrasPiezas", "Migracion", null, new { @Class = "migracion" })</li>
+                    </ul>
+                </li>
+                
+
+            </ul>
+
+
+        </div>
+    </div>
+
+
+    <div class="col-md-9">
+        <div id="renderResultado">
+
+            <div class="text-center">
+
+                <div class="">
+                    <span class="fa fa-arrow-left fa-5x text-muted"></span>
+                    <span class="fa fa-database fa-12x text-muted"></span>
+                </div>
+
+                <br /><br /><br />
+                <p>
+                    <i class="text-muted">
+                        SELECCIONA UNA TABLA PARA INICIAR LA MIGRACION
+                    </i>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+
+<script type="text/javascript">
+
+    $('a.migracion').on("click", function (e) {
+
+        e.preventDefault();
+        //alert(this.href);
+
+        $('#renderResultado').html('' +
+            '<div class="text-center">' +
+                '<h3>' +
+                    '<span class="text-muted">' +
+                        'Por favor espere, esto puede demorar bastante' +
+                    '</span>' +
+                '</h3>' +
+                '<i class="fa fa-spinner fa-pulse fa-12x text-muted"></i>' +
+                '<h3>' +
+                    'Se estan procesando la migración...' +
+                '</h3>' +
+            '</div>');
+
+        //alert(this.action);
+
+        $.ajax({
+            url: this.href,
+            type: 'GET',
+            success: function (result) {
+                $('#renderResultado').html(result); //  Campo que actualizara
+            }
+        });
+        return false;
+    });
+
+</script>

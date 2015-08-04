@@ -1,0 +1,88 @@
+﻿@model IEnumerable<RecordFCS.Models.TipoMedida>
+@using RecordFCS.Helpers
+
+<p class="text-right">Total de Registros <span class="badge">@ViewBag.totalRegistros</span></p>
+
+<table class="table table-hover table-condensed">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+        <th>@Html.DisplayNameFor(model => model.Status)</th>
+        <th>
+            @if (User.IsInRole("CatCrear"))
+            {
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear", "Crear", "TipoMedida", null, htmlAttributes: new { data_modal = "", @class = "btn btn-success pull-right TipoMedida" })
+            }
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+            <td>@Html.DisplayFor(modelItem => item.Status)</td>
+            <td>
+                <div class="pull-right">
+                    @if (User.IsInRole("CatEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "TipoMedida", routeValues: new { id = item.TipoMedidaID }, htmlAttributes: new { data_modal = "", @class = "btn btn-default btn-xs TipoMedida" })
+                    }
+                    @if (User.IsInRole("CatEliminar"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "TipoMedida", routeValues: new { id = item.TipoMedidaID }, htmlAttributes: new { data_modal = "", @class = "btn btn-danger btn-xs TipoMedida" })
+                    }
+
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+
+<script type="text/javascript">
+
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("a[data-modal].TipoMedida").on("click", function (e) {
+            // hide dropdown if any (this is used wehen invoking modal from link in bootstrap dropdown )
+            //$(e.target).closest('.btn-group').children('.dropdown-toggle').dropdown('toggle');
+
+            $('#myModalContent').load(this.href, function () {
+                $('#myModal').modal({
+                    /*backdrop: 'static',*/
+                    keyboard: true
+                }, 'show');
+                bindForm_TipoMedida(this);
+            });
+            return false;
+        });
+    });
+
+    function bindForm_TipoMedida(dialog) {
+        $('form', dialog).submit(function () {
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    if (result.success) {
+                        $('#myModal').modal('hide');
+                        $('#replacetarget').load(result.url); //  Campo que actualizara
+                        $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                    } else {
+                        $('#myModalContent').html(result);
+                        $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+                        bindForm_TipoMedida(dialog);
+                    }
+                }
+            });
+            return false;
+        });
+    }
+
+</script>

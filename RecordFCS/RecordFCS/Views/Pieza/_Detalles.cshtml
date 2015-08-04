@@ -1,0 +1,116 @@
+﻿@model RecordFCS.Models.Pieza
+@using RecordFCS.Helpers
+
+<div class="piezabody">
+    <h3>
+        <span class="text-uppercase">@Model.TipoPieza.Nombre</span> <span class="text-muted">@Model.Clave</span>
+        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar Pieza", "Eliminar", "Pieza", routeValues: new { id = Model.PiezaID }, htmlAttributes: new { data_modal = "", @class = "btn btn-danger btn-xs pull-right editarPieza" })
+        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar Pieza", "Editar", "Pieza", routeValues: new { id = Model.PiezaID }, htmlAttributes: new { data_modal = "", @class = "btn btn-info btn-xs pull-right editarPieza" })
+    </h3>
+
+
+
+    <div class="row">
+
+        <!-- Imagenes -->
+        <div class="col-md-4">
+
+            <div id="renderCarrusel_@Model.PiezaID" class="text-center">
+                @{ Html.RenderAction("Carrusel", "ImagenPieza", new { id = Model.PiezaID, status = false, tipo = "thumb" }); }
+            </div>
+
+        </div>
+        <!-- Imagenes -->
+
+
+        <div class="col-md-8">
+
+            <table class="table table-hover table-condensed">
+
+                <tr>
+                    <td class="text-right">
+                        <small>@Html.DisplayNameFor(model => model.Clave)</small>
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.Clave)
+                    </td>
+                </tr>
+
+                <!-- Atributos Variables-->
+                @foreach (var atributoPieza in Model.AtributoPiezas)
+                {
+                    <tr>
+                        <td class="text-right">
+                            @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "AtributoPieza", new { idPieza = Model.PiezaID, idAtributo = atributoPieza.AtributoID }, htmlAttributes: new { data_modal = "", @class = "link link-info pull-left EditarAtributo" })
+                            <small class="text-muted">@atributoPieza.Atributo.TipoAtributo.Nombre</small>
+                        </td>
+                        <td>
+                            <div id="renderAtributo_@Model.PiezaID-@atributoPieza.AtributoID" class="table-hover">
+                                <small>
+                                    @{ Html.RenderAction("Detalles", "AtributoPieza", new { idPieza = atributoPieza.PiezaID, idAtributo = atributoPieza.AtributoID }); }
+                                </small>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+                <!-- Medidas -->
+                <tr>
+                    <td class="text-right">
+                        @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear", "Crear", "Medida", routeValues: new { id = Model.PiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-success pull-left EditarMedida" })
+                        <small class="text-muted">Médidas</small>
+                    </td>
+                    <td>
+                        <div id="renderMedidaLista_@Model.PiezaID">
+                            @{ Html.RenderAction("Lista", "Medida", new { id = Model.PiezaID }); }
+                        </div>
+                    </td>
+                </tr>
+
+
+                <!-- Autores -->
+                <tr>
+                    <td class="text-right">
+                        @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear", "Crear", "AutorPieza", routeValues: new { id = Model.PiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-success pull-left EditarAutorPieza" })
+                        <small class="text-muted">Autores</small>
+                    </td>
+                    <td>
+                        <div id="renderAutorPiezaLista_@Model.PiezaID">
+                            @{ Html.RenderAction("Lista", "AutorPieza", new { id = Model.PiezaID }); }
+                        </div>
+                    </td>
+                </tr>
+
+
+
+                <!-- Ubicacion Actual -->
+                <tr>
+                    <td class="text-right">
+                        <small class="text-muted">Ubicación Actual</small>
+                    </td>
+                    <td>
+                        <small>@Html.DisplayFor(model => model.Ubicacion.Nombre)</small>
+                    </td>
+                </tr>
+
+
+                <!-- Status -->
+                <tr>
+                    <td class="text-right">
+                        <small class="text-muted">@Html.DisplayNameFor(model => model.Status)</small>
+                    </td>
+                    <td>
+                        <small>@Html.DisplayFor(model => model.Status)</small>
+                    </td>
+                </tr>
+
+
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+

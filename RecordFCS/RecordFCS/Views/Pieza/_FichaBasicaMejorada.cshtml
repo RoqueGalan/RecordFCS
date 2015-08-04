@@ -1,0 +1,304 @@
+﻿@using RecordFCS.Models
+@model Pieza
+
+@using RecordFCS.Helpers
+
+<div class="well">
+    <div class="barraSuperior barraEstado-@Model.Status.ToString()"></div>
+
+    <div class="clearfix">
+        @if (User.IsInRole("ObraFichComplet"))
+        {
+
+            <a href="@Url.Action("Detalles", "Obra", new { id = Model.ObraID })" class="btn btn-info btn-xs pull-right" data-toggle="tooltip" title="Abrir Ficha Completa" target="_blank"><span class='fa fa-pencil'></span></a>
+
+        }
+    </div>
+
+    <div class="row">
+
+
+        <div class="col-md-4">
+            <div class="text-center">
+
+                <!-- NO. INVENTARIO -->
+                <div>
+                    <h3 class="NoMargin text-@Model.Status.ToString()"><b>@Model.Obra.Clave</b></h3>
+                    <span class="text-muted">No. de Inventario</span>
+                </div>
+                <hr />
+
+                <!-- Imagenes -->
+                @if (ViewBag.verImagen == "si")
+                {
+                    <div id="carrusel_@Model.PiezaID" class="carousel img-thumbnail ">
+
+                        <div class="carousel-inner">
+
+                            @if (ViewBag.tieneImagen == "no")
+                            {
+                                <div id="imagen_0" class="item active">
+                                    <div class="thumbnail img-thumbnail">
+                                        <img src="holder.js/300x100/text:Sin Imagen" alt="Sin Imagen" class="">
+                                        <div class="caption text-center">
+                                            <span class="center-block"><b>Sin Imagen</b></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                ViewBag.active = "active";
+                                var item = Model.ImagenPiezas.FirstOrDefault();
+
+                                if (item != null)
+                                {
+                                    <div id="imagen_@item.ImagenPiezaID" class="item @ViewBag.active">
+                                        <div class="thumbnail img-thumbnail">
+                                            <img src="@item.RutaThumb" alt="@item.Titulo">
+                                            <div class="caption text-center">
+                                                <span class="center-block"><b>@item.Titulo</b></span>
+                                                <small class="text-muted">@item.Descripcion</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    ViewBag.active = "";
+                                }
+                                else
+                                {
+                                    <div id="imagen_0" class="item active">
+                                        <div class="thumbnail img-thumbnail">
+                                            <img src="holder.js/300x100/text:Imagen no encontrada" alt="Imagen no encontrada" class="">
+                                            <div class="caption text-center">
+                                                <span class="center-block"><b>Imagen no encontrada</b></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            }
+                        </div>
+
+                    </div>
+                }
+                <!-- Fin Imagenes -->
+
+            </div>
+        </div>
+
+
+        <div class="col-md-8">
+
+            <table class="table table-hover table-condensed">
+
+                @foreach (var att in Model.TipoPieza.Atributos)
+                {
+                    <tr>
+                        <td class="text-right">
+                            <small class="text-muted">
+                                @att.TipoAtributo.Nombre
+                            </small>
+                        </td>
+
+                        <td>
+
+                            <small>
+                                @switch (att.TipoAtributo.AntNombre)
+                                {
+                                    case "clave1":
+                                        @Model.Obra.Clave
+                                        break;
+
+                                    case "clave2":
+                                    @Model.Clave
+                                        break;
+
+                                    case "TipoObjeto_Clave":
+                                    @Model.Obra.TipoObra.Nombre
+                                        break;
+
+                                    case "TipoPieza_Clave":
+                                    @Model.TipoPieza.Nombre
+                                        break;
+
+                                    case "m_pieza_coleccion":
+
+                                        if (Model.Obra.ColeccionID != null)
+                                        {
+                                            @Model.Obra.Coleccion.Nombre
+                                        }
+                                        break;
+
+                                    case "ClassColeccion_Clave":
+                                    <span>-PENDIENTE DE SISTEMAS-</span>
+                                        break;
+
+                                    case "Autor_Clave":
+                                        foreach (var item in Model.AutorPiezas)
+                                        {
+                                            <span class="center-block">
+                                                @item.Autor.Nombre
+                                                <span> </span>
+                                                @item.Autor.Apellido
+                                            </span>
+                                        }
+
+                                        break;
+
+                                    case "m_pieza_dimensiones":
+
+                                        foreach (var item in Model.Medidas)
+                                        {
+                                            var medida = item.Largo.HasValue ? item.Largo + "" : "0";
+                                            medida = item.Ancho.HasValue ? medida + "x" + item.Ancho : medida;
+                                            medida = item.Profundidad.HasValue ? medida + "x" + item.Profundidad : medida;
+
+                                            medida = item.Diametro.HasValue ? medida + "x" + item.Diametro + "Ø" : medida;
+                                            medida = item.Diametro2.HasValue ? medida + "x" + item.Diametro2 + "Ø" : medida;
+
+                                            medida = medida + item.UMLongitud;
+
+                                            medida = item.Peso.HasValue ? medida + ", " + item.Peso + item.UMMasa : medida;
+
+
+                                            <span class="center-block">
+                                                <b>@item.TipoMedida.Nombre: </b> @medida
+                                            </span>
+                                        }
+
+                                        break;
+
+                                    case "m_cats":
+                                        foreach (var item in Model.CatalogoPiezas)
+                                        {
+                                            <span class="center-block">
+                                                @item.Catalogo.Nombre
+                                            </span>
+                                        }
+                                        break;
+
+                                    case "m_guion_det":
+                                        foreach (var item in Model.ExposicionPiezas)
+                                        {
+                                            <span class="center-block">
+                                                @item.Exposicion.Nombre
+                                            </span>
+
+                                        }
+                                        break;
+
+                                    case "MatriculaTecnica_Clave":
+                                        foreach (var item in Model.TecnicaPiezas)
+                                        {
+                                            <span class="center-block">
+                                                @item.Tecnica.Descripcion
+                                            </span>
+
+                                        }
+                                        break;
+
+                                    case "Matricula_Clave":
+                                        foreach (var item in Model.MatriculaPieza)
+                                        {
+                                            <span class="center-block">
+                                                @item.Matricula.Descripcion
+                                            </span>
+                                        }
+                                        break;
+
+                                    case "MTecnicaMarco_Clave":
+                                        foreach (var item in Model.TecnicaMarcoPieza)
+                                        {
+                                            <span class="center-block">
+                                                @item.TecnicaMarco.Descripcion
+                                            </span>
+                                        }
+                                        break;
+
+                                    case "fecha_registro_ORI":
+                                    @Model.Obra.FechaRegistro
+                                        break;
+
+                                    case "fecha_registro":
+                                    @Model.FechaRegistro
+                                        break;
+
+                                    case "catTipoAdquisicion":
+                                        if (Model.Obra.TipoAdquisicionID != null)
+                                        {
+                                            @Model.Obra.TipoAdquisicion.Nombre
+                                        }
+                                        break;
+
+                                    case "Propietario_Clave":
+                                        if (Model.Obra.PropietarioID != null)
+                                        {
+                                            @Model.Obra.Propietario.Nombre
+                                        }
+                                        break;
+
+                                    case "Ubicacion_Clave (OBRA)":
+                                    @Model.Ubicacion.Nombre
+                                        break;
+
+
+                                    case "estatus":
+                                    @Model.Obra.Status
+                                        break;
+
+                                    case "estatus_pieza":
+                                    @Model.Status
+                                        break;
+
+                                    default:
+                                        if (att.TipoAtributo.NombreID == "Generico")
+                                        {
+                                            var attPieza = Model.AtributoPiezas.SingleOrDefault(a => a.AtributoID == att.AtributoID);
+
+                                            if (attPieza != null)
+                                            {
+                                                if (att.TipoAtributo.EsLista)
+                                                {
+                                                    //traer valor de ListaValor Valor
+                                                    if (attPieza.ListaValorID != null)
+                                                    {
+                                                        @attPieza.ListaValor.Valor
+                                                    }
+
+
+                                                }
+                                                else
+                                                {
+                                                    //traer valor de Valor
+                                                    @attPieza.Valor
+                                                }
+                                            }
+
+                                        }
+                                        break;
+                                }
+
+                            </small>
+
+                        </td>
+
+                    </tr>
+
+
+                }
+
+            </table>
+        </div>
+
+    </div>
+
+
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>
+
+<script src="~/Scripts/holder.js"></script>

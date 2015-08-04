@@ -1,0 +1,201 @@
+﻿@model RecordFCS.Models.Pieza
+@using RecordFCS.Helpers
+
+<div class="well">
+    <div class="barraSuperior barraEstado-@Model.Status.ToString()"></div>
+    @if (User.IsInRole("ObraFichComplet"))
+    {
+        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Datos Completos", "Detalles", "Obra", routeValues: new { id = Model.ObraID }, htmlAttributes: new { @class = "btn btn-info btn-xs pull-right", target = "_blank" })
+    }
+
+
+    <div class="row">
+        <!-- Imagenes -->
+        <div class="col-md-4">
+            <div class="text-center">
+
+                <!-- NO. INVENTARIO -->
+                <div>
+                    <h3 class="NoMargin text-@Model.Status.ToString()"><b>@Model.Obra.Clave</b></h3>
+                    <span class="text-muted">No. de Inventario</span>
+                </div>
+                <hr />
+
+                <!-- CARRUSEL-->
+                <div id="carrusel_@Model.PiezaID" class="carousel img-thumbnail ">
+                    <div class="carousel-inner">
+                        @{
+                            ViewBag.active = "active";
+                            ViewBag.noImagenes = Model.ImagenPiezas.Count;
+                        }
+                        @if (ViewBag.noImagenes == 0)
+                        {
+                            <div id="imagen_0" class="item @ViewBag.active">
+                                <div class="thumbnail img-thumbnail">
+                                    <img src="holder.js/300x200/text:Sin Imagenes" alt="No hay Imagenes" class="">
+                                    <div class="caption text-center">
+                                        <span class="center-block"><b>Sin Imagenes</b></span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        @foreach (var item in Model.ImagenPiezas)
+                        {
+                            <div id="imagen_@item.ImagenPiezaID" class="item @ViewBag.active">
+                                <div class="thumbnail img-thumbnail">
+                                    <img src="@item.RutaThumb" alt="@item.Titulo" class="">
+                                    <div class="caption text-center">
+                                        <span class="center-block"><b>@item.Titulo</b></span>
+                                        <small class="text-muted">@item.Descripcion</small>
+                                    </div>
+                                </div>
+                            </div>
+                            ViewBag.active = "";
+                        }
+                    </div>
+                    <a class="left carousel-control" href="#carrusel_@Model.PiezaID" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+                    <a class="right carousel-control" href="#carrusel_@Model.PiezaID" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        @{ViewBag.active = "active";}
+                        @if (ViewBag.noImagenes == 0)
+                        {
+                            <li data-target="#carrusel_@Model.PiezaID" data-slide-to="0" class="@ViewBag.active"></li>
+                        }
+                        @for (int i = 0; i < ViewBag.noImagenes; i++)
+                        {
+                            <li data-target="#carrusel_@Model.PiezaID" data-slide-to="@i" class="@ViewBag.active"></li>
+                            ViewBag.active = "";
+                        }
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <!-- Fin Imagenes -->
+
+        <div class="col-md-8">
+            <table class="table table-hover table-condensed">
+
+                @foreach (var attPieza in Model.AtributoPiezas)
+                {
+                    <tr>
+                        <td class="text-right">
+                            <small class="text-muted">
+                                @attPieza.Atributo.TipoAtributo.Nombre
+                            </small>
+                        </td>
+
+                        <td>
+                            <small>
+                                @if (attPieza.Atributo.TipoAtributo.NombreID == "Generico")
+                                {
+                                    if (attPieza.Atributo.TipoAtributo.EsLista)
+                                    {
+                                        //traer valor de ListaValor Valor
+                                        if (attPieza.ListaValorID != null)
+                                        {
+                                            @attPieza.ListaValor.Valor
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //traer valor de Valor
+                                        @attPieza.Valor
+                                    }
+                                }
+                                else if (attPieza.Atributo.TipoAtributo.DatoHTML == "Obra")
+                                {
+                                    //todo lo que sea de OBRA
+                                    switch (attPieza.Atributo.TipoAtributo.NombreID)
+                                    {
+                                        case "Propietario":
+                                            @Model.Obra.Propietario.Nombre
+                                            break;
+                                        case "Coleccion":
+                                            if (Model.Obra.ColeccionID != null)
+                                            {
+                                                @Model.Obra.Coleccion.Nombre;
+                                            }
+                                            break;
+                                        case "TipoAdquisicion":
+                                        @Model.Obra.TipoAdquisicion.Nombre
+                                            break;
+                                        case "TipoObra":
+                                        @Model.Obra.TipoObra.Nombre
+                                            break;
+                                        case "Status":
+                                        @Model.Obra.Status
+                                            break;
+                                        case "FechaRegistro":
+                                        @Model.Obra.FechaRegistro
+                                            break;
+
+                                    }
+                                }
+                                else
+                                {
+                                    //todos lo que sea de PIEZA
+                                    switch (attPieza.Atributo.TipoAtributo.NombreID)
+                                    {
+                                        case "Tecnica":
+                                            foreach (var item in Model.TecnicaPiezas)
+                                            {
+                                                @item.Tecnica.Descripcion
+                                            }
+                                            break;
+                                        case "Autor":
+                                            foreach (var item in Model.AutorPiezas)
+                                            {
+                                                @item.Autor.Nombre
+                                                @item.Autor.Apellido
+                                            }
+                                            break;
+                                        case "Medida":
+                                            foreach (var item in Model.Medidas)
+                                            {
+                                                @item.TipoMedida.Nombre
+                                                @item.Largo
+                                                @item.Ancho
+                                                @item.Diametro
+                                            }
+                                            break;
+                                        case "Catalogo":
+                                            foreach (var item in Model.CatalogoPiezas)
+                                            {
+                                                @item.Catalogo.Nombre
+                                            }
+                                            break;
+                                        case "Exposicion":
+                                            foreach (var item in Model.ExposicionPiezas)
+                                            {
+                                                @item.Exposicion.Nombre
+                                            }
+                                            break;
+                                        case "TipoPieza":
+                                        @Model.TipoPieza.Nombre
+                                            break;
+                                        case "Ubicacion":
+                                        @Model.Ubicacion.Nombre
+                                            break;
+                                        case "Status":
+                                        @Model.Status
+                                            break;
+                                    }
+                                }
+
+                            </small>
+                        </td>
+
+
+
+                    </tr>
+                }
+
+            </table>
+        </div>
+
+    </div>
+
+
+</div>

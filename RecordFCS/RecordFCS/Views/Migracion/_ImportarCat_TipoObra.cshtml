@@ -1,0 +1,56 @@
+﻿@model IEnumerable<RecordFCS.Models.TipoObra>
+
+@{
+    ViewBag.Title = "ImportarCat_TipoObra";
+}
+<div class="well">
+    <h1>@ViewBag.NombreTabla</h1>
+    <p>@ViewBag.mensaje</p>
+</div>
+
+@if (ViewBag.error == "error")
+{
+    <h1>YA SE IMPORTO ESTE CATALOGO</h1>
+}
+else
+{
+    <h2>Importar Catalogo Tipo de Obra</h2>
+    <p>Extraidos de la base vieja</p>
+    <p>Total: @ViewBag.TotalRegistros</p>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AntID)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AntID)
+                </td>
+            </tr>
+        }
+
+    </table>
+
+}
+
+
+
+
+

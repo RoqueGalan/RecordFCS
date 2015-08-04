@@ -1,0 +1,180 @@
+﻿@model ICollection<RecordFCS.Models.ImagenPieza>
+@using RecordFCS.Helpers
+
+<div id="@ViewBag.CarruselID" class="carousel slide img-thumbnail ">
+    <div class="carousel-inner">
+
+        @{
+            ViewBag.active = "active";
+        }
+
+        @if (ViewBag.NoImagenes == 0)
+        {
+            <div id="imagen_0" class="item @ViewBag.active">
+                <div class="thumbnail img-thumbnail">
+                    <img src="holder.js/300x200/text:Sin Imagen" alt="Sin Imagen" class="">
+
+                    <div class="caption text-center">
+
+                        @if (User.IsInRole("ImagenCrear"))
+                        {
+                            <span class="center-block"><b>Agregue una Imagen</b></span>
+                            <span class="text-muted"></span>
+                            <div>
+                                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ImagenPieza", new { id = ViewBag.PiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-success btn-xs CrearImagen" })
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+        }
+
+
+
+        @foreach (var item in Model)
+        {
+            <div id="imagen_@item.ImagenPiezaID" class="item @ViewBag.active">
+                <div class="thumbnail img-thumbnail">
+                    <img src="@item.RutaThumb" alt="@item.Titulo" class="">
+
+                    <div class="caption text-center">
+                        <span class="center-block"><b>@item.Titulo</b></span>
+                        <small class="text-muted">@item.Descripcion</small>
+                        @if (User.IsInRole("ImagenCrear"))
+                        {
+                            <span class="center-block">
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </span>
+                        }
+
+                        <div>
+                            @if (User.IsInRole("ImagenCrear"))
+                            {
+                                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Nueva Imagen", "Crear", "ImagenPieza", new { id = item.PiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-success btn-xs CrearImagen" })
+                            }
+                            @if (User.IsInRole("ImagenEditar"))
+                            {
+                                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar Imagen", "Editar", "ImagenPieza", new { id = item.ImagenPiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-info btn-xs EditarImagen" })
+                            }
+                            @if (User.IsInRole("ImagenEliminar"))
+                            {
+                                @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar Imagen", "Eliminar", "ImagenPieza", new { id = item.ImagenPiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-danger btn-xs EditarImagen" })
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                            ViewBag.active = "";
+        }
+
+    </div>
+
+    <a class="left carousel-control" href="#@ViewBag.CarruselID" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+    <a class="right carousel-control" href="#@ViewBag.CarruselID" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+
+    <!-- Indicators -->
+
+    <ol class="carousel-indicators">
+        @{ViewBag.active = "active";}
+
+        @if (ViewBag.NoImagenes == 0)
+        {
+            <li data-target="#@ViewBag.CarruselID" data-slide-to="0" class="@ViewBag.active"></li>
+        }
+
+        @for (int i = 0; i < ViewBag.NoImagenes; i++)
+        {
+            <li data-target="#@ViewBag.CarruselID" data-slide-to="@i" class="@ViewBag.active"></li>
+
+            ViewBag.active = "";
+        }
+    </ol>
+
+
+
+</div>
+
+@if (User.IsInRole("ImagenCrear,ImagenEditar,ImagenEliminar"))
+{
+    @*CREAR IMAGENES*@
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+
+            // Abrir Modales en formulario PRE REGISTRO
+            $("a[data-modal].CrearImagen").on("click", function (e) {
+                $('#myModalContent').load(this.href, function () {
+                    $('#myModal').modal({
+                        /*backdrop: 'static',*/
+                        keyboard: true
+                    }, 'show');
+                });
+                return false;
+            });
+        });
+
+
+    </script>
+
+
+    @*CREAR IMAGENES*@
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+
+            // Abrir Modales en formulario PRE REGISTRO
+            $("a[data-modal].EditarImagen").on("click", function (e) {
+                $('#myModalContent').load(this.href, function () {
+                    $('#myModal').modal({
+                        /*backdrop: 'static',*/
+                        keyboard: true
+                    }, 'show');
+                    bindForm_editarImagen(this);
+
+                });
+                return false;
+            });
+        });
+
+        function bindForm_editarImagen(dialog) {
+            $('form', dialog).submit(function () {
+                $.ajax({
+                    url: this.action,
+                    type: this.method,
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        if (result.success) {
+                            var renderID = '';
+                            if (result.lista == "lista") {
+                                //var renderID = '#renderMedida_lista';
+                                renderID = '#renderCarrusel_' + result.idPieza
+                            } else {
+                                renderID = '#imagen_' + result.idImagenPieza;
+                            }
+
+                            $(renderID).load(result.url); // campo que reemplazara + accion
+                            $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                            $('#myModal').modal('hide');
+
+
+                        } else {
+                            $('#myModalContent').html(result);
+                            $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                            bindForm_editarImagen(dialog);
+                        }
+                    }
+                });
+                return false;
+            });
+        }
+
+    </script>
+
+}

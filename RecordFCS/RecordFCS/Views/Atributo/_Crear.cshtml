@@ -1,0 +1,95 @@
+﻿@model RecordFCS.Models.Atributo
+
+@{
+    ViewBag.PagName = "Crear";
+    ViewBag.CtrlName = "Atributo";
+    ViewBag.Title = @ViewBag.PagName;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+        @*<small class="text-warning">@Model.TipoPieza.Nombre</small>*@
+
+    </h4>
+</div>
+
+
+@using (Html.BeginForm())
+{
+    <div class="modal-body">
+
+        @Html.AntiForgeryToken()
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.TipoPiezaID)
+            @Html.HiddenFor(model => model.Status)
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Orden, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Orden, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Orden, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TipoAtributoID, "TipoAtributoID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("TipoAtributoID", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TipoAtributoID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Requerido, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.Requerido)
+                        @Html.ValidationMessageFor(model => model.Requerido, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.EnFichaBasica, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.EnFichaBasica)
+                        @Html.ValidationMessageFor(model => model.EnFichaBasica, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" id="RenderEspera">
+                <label class="control-label col-md-2">
+                    <i class="fa fa-spinner fa-2x fa-pulse text-success"></i>
+                </label>
+                <div class="col-md-10">
+                    <span><b>Se estan restructurando las obras...</b></span>
+                    <small>(No cierre la ventana por favor)</small>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        <input class="btn btn-primary" type="submit" value="Agregar" id="btnSubmitAtrituto" />
+    </div>
+}
+
+
+<script type="text/javascript">
+
+        $('#RenderEspera').toggle();
+
+</script>
+

@@ -1,0 +1,485 @@
+﻿@model RecordFCS.Models.Pieza
+@using RecordFCS.Helpers
+
+<div class="well clearfix">
+    <div class="barraSuperior @ViewBag.ColorBarra"></div>
+
+    <div class="label label-default text-uppercase pull-right labelTipoObra">
+        @if (Model.TipoPieza.EsMaestra)
+        {
+            <span>
+                <b>
+                    @if (Model.TipoPieza.Nombre == "Maestra")
+                    {
+                        @Model.Obra.TipoObra.Nombre
+                    }
+                    else
+                    {
+                        @:Maestra
+                    }
+                </b>
+            </span>
+            <span>
+                -
+                @Model.Obra.Clave
+            </span>
+        }
+        else
+        {
+            <span>
+                <b>
+                    @Model.TipoPieza.Nombre
+                </b>
+            </span>
+            <span>
+                -
+                @Model.Clave
+            </span>
+        }
+    </div>
+
+
+    <div class="row">
+
+        <!-- Imagenes -->
+        <div class="col-md-4">
+            <div id="renderCarrusel_@Model.PiezaID" class="text-center">
+                @{ Html.RenderAction("Carrusel", "ImagenPieza", new { id = Model.PiezaID, status = false, tipo = "thumb" }); }
+            </div>
+        </div>
+        <!--  -->
+        <div class="col-md-8">
+            <table class="table table-hover table-condensed table-striped">
+                
+                <tbody>
+                    @foreach (var att in Model.TipoPieza.Atributos)
+                    {
+
+                    <!-- VALIDACION DE CADA ATRIBUTO Y TIPO DE ATRIBUTO-->
+                        //comprobar que el att este en pieza.AtributoPieza
+                        //si esta continuar normal
+                        //si no esta solo colocarle un color y no tratar de traer el valor
+
+                        //for
+                        var attPieza = Model.AtributoPiezas.SingleOrDefault(a => a.AtributoID == att.AtributoID);
+                        string conValor = "";
+                        string valorEs = "";
+                        if (attPieza == null)
+                        {
+                            conValor = "warning";
+                        }
+
+
+                        if (att.TipoAtributo.DatoHTML == "Catalogo")
+                        {
+                            switch (att.TipoAtributo.AntNombre)
+                            {
+                                case "Autor_Clave": if (Model.AutorPiezas.Count > 0) { conValor = ""; } break;
+                                case "m_pieza_dimensiones": if (Model.Medidas.Count > 0) { conValor = ""; } break;
+                                case "m_cats": if (Model.CatalogoPiezas.Count > 0) { conValor = ""; } break;
+                                case "m_guion_det": if (Model.ExposicionPiezas.Count > 0) { conValor = ""; } break;
+                                case "MatriculaTecnica_Clave": if (Model.TecnicaPiezas.Count > 0) { conValor = ""; } break;
+                                case "Matricula_Clave": if (Model.MatriculaPieza.Count > 0) { conValor = ""; } break;
+                                case "MTecnicaMarco_Clave": if (Model.TecnicaMarcoPieza.Count > 0) { conValor = ""; } break;
+                            }
+                            <tr class="@conValor">
+                                <td class="text-right col-md-3 col-sm-3">
+                                    <!-- LABEL DE CADA TIPO DE ATRIBUTO -->
+                                    <small class="">
+                                        <b>
+                                            @att.TipoAtributo.Nombre
+                                        </b>
+                                        <!-- BOTON -->
+                                        @if (User.IsInRole("AttPiezaAdd"))
+                                        {
+                                            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Editar " + att.TipoAtributo.Nombre, "Crear", att.TipoAtributo.DatoCS, routeValues: new { id = Model.PiezaID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs Editar" + att.TipoAtributo.DatoCS })
+                                        }
+                                    </small>
+
+                                </td>
+
+                                <td>
+                                    <div id="render_@att.TipoAtributo.DatoCS-Lista_@Model.PiezaID">
+                                        @{ Html.RenderAction("Lista", @att.TipoAtributo.DatoCS, new { id = Model.PiezaID }); }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        else if (att.TipoAtributo.DatoHTML == "Obra")
+                        {
+                            switch (att.TipoAtributo.AntNombre)
+                            {
+                                case "clave1":
+                                    <tr>
+                                        <td class="text-right col-md-3 col-sm-3">
+                                            <small class="">
+                                                <b>
+                                                    @att.TipoAtributo.Nombre
+                                                </b>
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <div id="renderObra_@Model.ObraID-@att.TipoAtributo.DatoCS">
+                                                <span>@Model.Obra.Clave</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    break;
+
+                                case "TipoObjeto_Clave":
+                                <tr>
+                                    <td class="text-right col-md-3 col-sm-3">
+                                        <small class="">
+                                            <b>
+                                                @att.TipoAtributo.Nombre
+                                            </b>
+                                            @if (User.IsInRole("AttObraEdit"))
+                                            {
+                                                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + att.TipoAtributo.Nombre, "Editar", "Obra", routeValues: new { obraID = Model.ObraID, campo = att.TipoAtributo.DatoCS }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs EditarObra" })
+                                            }
+                                        </small>
+
+                                    </td>
+                                    <td>
+                                        <div id="renderObra_@Model.ObraID-@att.TipoAtributo.DatoCS">
+                                            <span>@Model.Obra.TipoObra.Nombre</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                        break;
+
+                                case "m_pieza_coleccion":
+
+                                        if (Model.Obra.ColeccionID != null)
+                                        {
+                                            valorEs = Model.Obra.Coleccion.Nombre;
+                                            conValor = "";
+                                        }
+                                        else
+                                        {
+                                            valorEs = "";
+                                            conValor = "warning";
+                                        }
+                                        <tr class="@conValor">
+                                            <td class="text-right col-md-3 col-sm-3">
+                                                <small class="">
+                                                    <b>
+                                                        @att.TipoAtributo.Nombre
+                                                    </b>
+                                                    @if (User.IsInRole("AttObraEdit"))
+                                                    {
+                                                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + att.TipoAtributo.Nombre, "Editar", "Obra", routeValues: new { obraID = Model.ObraID, campo = att.TipoAtributo.DatoCS }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs EditarObra" })
+                                                    }
+                                                </small>
+
+                                            </td>
+                                            <td>
+                                                <div id="renderObra_@Model.ObraID-@att.TipoAtributo.DatoCS">
+                                                    <span>@valorEs</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                                break;
+
+                                case "fecha_registro_ORI":
+                                <tr>
+                                    <td class="text-right col-md-3 col-sm-3">
+                                        <small class="">
+                                            <b>
+                                                @att.TipoAtributo.Nombre
+                                            </b>
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <div id="renderObra_@Model.ObraID-@att.TipoAtributo.DatoCS">
+                                            <span>@Model.Obra.FechaRegistro</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                                break;
+
+                                case "catTipoAdquisicion":
+                                                if (Model.Obra.TipoAdquisicionID != null)
+                                                {
+                                                    valorEs = Model.Obra.TipoAdquisicion.Nombre;
+                                                    conValor = "";
+                                                }
+                                                else
+                                                {
+                                                    valorEs = "";
+                                                    conValor = "warning";
+                                                }
+                                                <tr class="@conValor">
+                                                    <td class="text-right col-md-3 col-sm-3">
+                                                        <small class="">
+                                                            <b>
+                                                                @att.TipoAtributo.Nombre
+                                                            </b>
+                                                            @if (User.IsInRole("AttObraEdit"))
+                                                            {
+                                                                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + att.TipoAtributo.Nombre, "Editar", "Obra", routeValues: new { obraID = Model.ObraID, campo = att.TipoAtributo.DatoCS }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs EditarObra" })
+                                                            }
+                                                        </small>
+
+                                                    </td>
+                                                    <td>
+                                                        <div id="renderObra_@Model.ObraID-@att.TipoAtributo.DatoCS">
+                                                            <span>@valorEs</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                        break;
+
+                                case "Propietario_Clave":
+                                                        if (User.IsInRole("VerAttPropietario"))
+                                                        {
+                                                            if (Model.Obra.PropietarioID != null)
+                                                            {
+                                                                valorEs = Model.Obra.Propietario.Nombre.ToString();
+                                                                conValor = "";
+                                                            }
+                                                            else
+                                                            {
+                                                                valorEs = "";
+                                                                conValor = "warning";
+                                                            }
+                                                            <tr class="@conValor">
+                                                                <td class="text-right col-md-3 col-sm-3">
+                                                                    <small class="">
+                                                                        <b>
+                                                                            @att.TipoAtributo.Nombre
+                                                                        </b>
+                                                                        @if (User.IsInRole("AttObraEdit"))
+                                                                        {
+                                                                            @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + att.TipoAtributo.Nombre, "Editar", "Obra", routeValues: new { obraID = Model.ObraID, campo = att.TipoAtributo.DatoCS }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs EditarObra" })
+                                                                        }
+                                                                    </small>
+
+                                                                </td>
+                                                                <td>
+                                                                    <div id="renderObra_@Model.ObraID-@att.TipoAtributo.DatoCS">
+                                                                        <span>@valorEs</span>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        break;
+
+                                case "estatus":
+                                <tr>
+                                    <td class="text-right col-md-3 col-sm-3">
+                                        <small class="">
+                                            <b>
+                                                @att.TipoAtributo.Nombre
+                                            </b>
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <div id="renderObra_@Model.ObraID-@att.TipoAtributo.DatoCS">
+                                            <span>
+                                                <b>@Model.Obra.Status</b>
+                                                @if (User.IsInRole("ObraStatus") && Model.TipoPieza.EsMaestra)
+                                                {
+                                                    @Html.NoEncodeActionLink("<span class='fa fa-check'></span>", "Activar Obra", "CambiarStatus", "Obra", routeValues: new { id = Model.ObraID, Estado = true }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs EditarObra" })
+                                                    @Html.NoEncodeActionLink("<span class='fa fa-times'></span>", "Desactivar Obra", "CambiarStatus", "Obra", routeValues: new { id = Model.ObraID, Estado = false }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs EditarObra" })
+                                                }
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                                break;
+
+                                default:
+                                <tr>
+                                    <td>
+                                        <small class="">
+                                            <b>
+                                                @att.TipoAtributo.Nombre
+                                            </b>
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <b class="text-danger">NO SE ENCONTRO</b> - Verificar con el Administrador -
+                                    </td>
+                                </tr>
+                                                break;
+                            }
+                        }
+                        else if (att.TipoAtributo.DatoHTML == "Pieza")
+                        {
+                            switch (att.TipoAtributo.AntNombre)
+                            {
+                                case "clave2":
+                                    <tr>
+                                        <td class="text-right col-md-3 col-sm-3">
+                                            <small class="">
+                                                <b>
+                                                    @att.TipoAtributo.Nombre
+                                                </b>
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <div id="renderPieza_@Model.PiezaID-@att.TipoAtributo.DatoCS">
+                                                <span>@Model.Clave</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    break;
+
+                                case "TipoPieza_Clave":
+                                <tr>
+                                    <td class="text-right col-md-3 col-sm-3">
+                                        <small class="">
+                                            <b>
+                                                @att.TipoAtributo.Nombre
+                                            </b>
+                                            @if (User.IsInRole("AttPiezaEdit"))
+                                            {
+                                                @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + att.TipoAtributo.Nombre, "Editar", "Pieza", routeValues: new { piezaID = Model.PiezaID, campo = att.TipoAtributo.DatoCS }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs EditarPieza" })
+                                            }
+                                        </small>
+
+                                    </td>
+                                    <td>
+                                        <div id="renderPieza_@Model.PiezaID-@att.TipoAtributo.DatoCS">
+                                            <span>@Model.TipoPieza.Nombre</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                        break;
+
+                                case "fecha_registro":
+                                <tr>
+                                    <td class="text-right col-md-3 col-sm-3">
+                                        <small class="">
+                                            <b>
+                                                @att.TipoAtributo.Nombre
+                                            </b>
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <div id="renderPieza_@Model.PiezaID-@att.TipoAtributo.DatoCS">
+                                            <span>@Model.FechaRegistro</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                        break;
+
+                                case "Ubicacion_Clave (OBRA)":
+                                        if (Model.UbicacionID != null)
+                                        {
+                                            valorEs = Model.Ubicacion.Nombre;
+                                            conValor = "";
+                                        }
+                                        else
+                                        {
+                                            valorEs = "";
+                                            conValor = "warning";
+                                        }
+                                        <tr class="@conValor">
+                                            <td class="text-right col-md-3 col-sm-3">
+                                                <small class="">
+                                                    <b>
+                                                        @att.TipoAtributo.Nombre
+                                                    </b>
+                                                    @if (User.IsInRole("AttPiezaEdit"))
+                                                    {
+                                                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + att.TipoAtributo.Nombre, "Editar", "Pieza", routeValues: new { piezaID = Model.PiezaID, campo = att.TipoAtributo.DatoCS }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs EditarPieza" })
+                                                    }
+                                                </small>
+
+                                            </td>
+                                            <td>
+                                                <div id="renderPieza_@Model.PiezaID-@att.TipoAtributo.DatoCS">
+                                                    <span>@valorEs</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                                break;
+
+                                case "estatus_pieza":
+                                <tr>
+                                    <td class="text-right col-md-3 col-sm-3">
+                                        <small class="">
+                                            <b>
+                                                @att.TipoAtributo.Nombre
+                                            </b>
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <div id="renderObra_@Model.PiezaID-@att.TipoAtributo.DatoCS">
+                                            <span>
+                                                <b>@Model.Status</b>
+                                                @if (User.IsInRole("PiezaStatus") && !Model.TipoPieza.EsMaestra)
+                                                {
+                                                    @Html.NoEncodeActionLink("<span class='fa fa-check'></span>", "Activar Pieza", "CambiarStatus", "Pieza", routeValues: new { id = Model.PiezaID, Estado = true }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs EditarObra" })
+                                                    @Html.NoEncodeActionLink("<span class='fa fa-times'></span>", "Desactivar Pieza", "CambiarStatus", "Pieza", routeValues: new { id = Model.PiezaID, Estado = false }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs EditarObra" })
+                                                }
+                                            </span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                                break;
+
+                            }
+                        }
+                        else
+                        {
+                            if (attPieza != null)
+                            {
+                                if (att.TipoAtributo.EsLista)
+                                {
+                                    if (attPieza.ListaValorID == null)
+                                    {
+                                        conValor = "warning";
+                                    }
+                                }
+                                else
+                                {
+                                    if (string.IsNullOrWhiteSpace(attPieza.Valor))
+                                    {
+                                        conValor = "warning";
+                                    }
+                                }
+                            }
+
+                            <tr class="@conValor">
+                                <td class="text-right col-md-3 col-sm-3">
+                                    <small class="">
+                                        <b>
+                                            @att.TipoAtributo.Nombre
+                                        </b>
+                                        @if (User.IsInRole("AttPiezaEdit"))
+                                        {
+                                            @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar " + att.TipoAtributo.Nombre, "Editar", "AtributoPieza", new { idPieza = Model.PiezaID, idAtributo = att.AtributoID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-info btn-xs EditarAtributo" })
+                                        }
+                                    </small>
+
+                                </td>
+                                <td>
+                                    <div id="renderAtributo_@Model.PiezaID-@att.AtributoID">
+
+                                        <span>
+                                            @{ Html.RenderAction("Detalles", "AtributoPieza", new { idPieza = Model.PiezaID, idAtributo = att.AtributoID }); }
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        }
+
+
+                    }
+                </tbody>
+            </table>
+
+
+
+
+
+</div>
+
+    </div>
+
+
+</div>

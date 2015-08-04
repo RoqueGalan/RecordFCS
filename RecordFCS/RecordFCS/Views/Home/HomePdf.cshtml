@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Prueba Crystal PDF";
+}
+
+<h2>@ViewBag.Title</h2>
+<p>Este es un reporte de los primeros 10 autores</p>
+
+
+
+<div class="row">
+    <div class="col-md-10">
+        <iframe src="@Url.Action("Pdf", "Home")" height="500" width="100%"></iframe>
+    </div>
+    <div class="col-md-2">
+        <h3>Otro contenido de otra pagina</h3>
+        <button type="button" class="btn btn-primary">Click aqui</button>
+    </div>
+</div>

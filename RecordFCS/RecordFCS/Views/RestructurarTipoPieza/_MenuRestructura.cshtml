@@ -1,0 +1,96 @@
+﻿@using RecordFCS.Helpers
+
+
+@{
+    ViewBag.Title = @ViewBag.tituloMenu;
+}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h1 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.tituloMenu</b>
+    </h1>
+</div>
+
+<div id="renderfin">
+    @using (Html.BeginForm("Restructura_AtributoPieza", "RestructurarTipoPieza", FormMethod.Post, new { id = "FormRestructura", name = "FormRestructura" }))
+    {
+
+        <div class="modal-body">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" id="id" name="id" value="@ViewBag.atributoID" />
+
+            <div id="renderInfo">
+                <h3>@ViewBag.descripcion</h3>
+
+                <p class="text-info">Datos actuales:</p>
+                <p>
+                    <b>Total de Piezas:</b> @ViewBag.totalPiezas
+                    <br />
+                    <b>Piezas Completas:</b> @ViewBag.totalPiezasCompletas
+                    <br />
+                    <b>Piezas Incompletas:</b> @ViewBag.totalPiezasInCompletas
+                </p>
+
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" role="progressbar" style="width:@ViewBag.porCompleto">
+                        <p>Completas</p>
+                    </div>
+                    
+                    <div class="progress-bar progress-bar-warning" role="progressbar" style="width:@ViewBag.porIncompleto">
+                        <p>Incompletas</p>
+                    </div>
+                </div>
+
+
+
+                <div id="renderEspera">
+
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+            <button class="btn btn-info" type="submit"><span class='fa fa-flash'></span> Iniciar Restructura</button>
+
+        </div>
+    }
+
+</div>
+
+
+<script type="text/javascript">
+
+    $('#FormRestructura').submit(function () {
+
+        //alert(this.action);
+
+        $('#renderEspera').html('' +
+            '<div class="text-center">' +
+                '<p>' +
+                    '<span class="text-muted">' +
+                        'Por favor espere' +
+                    '</span>' +
+                '</p>' +
+                '<i class="fa fa-spinner fa-pulse fa-5x text-muted"></i>' +
+                '<p>' +
+                    'Se estan procedando los resultados...' +
+                '</p>' +
+            '</div>');
+
+        $.ajax({
+            url: this.action,
+            type: this.method,
+            data: $(this).serialize(),
+            success: function (result) {
+                $('#renderfin').html(result); //  Campo que actualizara
+            }
+        });
+        return false;
+    });
+
+</script>

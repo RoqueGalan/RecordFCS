@@ -1,0 +1,101 @@
+﻿@using RecordFCS.Helpers
+@model List<IGrouping<long, RecordFCS.Models.ViewsModel.PiezaEnCarrito>>
+
+<span id="TotalLT" class="badge">@ViewBag.totalLT</span>
+
+@*<ul class="media-list" id="ULLT">
+        @foreach (var grupo in Model)
+        {
+            <li class="media" id="gLT_@grupo.Key">
+                <div class="media-left">
+                    dd
+                </div>
+                <div class="media-middle">
+                    d
+                </div>
+                <div class="media-body">
+
+
+                    No. de Inventario
+                    <a href="@Url.Action("Detalles", "Obra", new { id = grupo.Key })" class="mediaGP-left">
+                        <b>@grupo.Key</b>
+                    </a>
+                    <ul class="media-list">
+
+
+                        @foreach (var item in grupo)
+                        {
+                            <li class="media" id="itemLt_@item.PiezaID">
+                                <div class="media-left">
+                                    <img src="@item.RutaImagen" alt="@item.ClaveObra" class="media-object img-mini">
+                                </div>
+                                <div class="media-body">
+                                    <small class="media-heading"><b>@item.ClavePieza</b></small>
+                                    <small class="center-block">@item.Titulo</small>
+                                    <small class="center-block"><b>@item.Autor</b></small>
+                                </div>
+                                <div class="media-right">
+                                    @Html.NoEncodeActionLink("<span class='fa fa-times'></span>", "Quitar Pieza", "PiezaDel", "Listado", new { PiezaID = item.PiezaID }, new { data_toggle = "tooltip", @Class = "link link-danger llamarRenderLTDEL" })
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+
+            </li>
+        }
+    </ul>*@
+
+
+<ul class="media-list" id="ULLT">
+    @foreach (var grupo in Model)
+    {
+        <li class="media LTPadre" id="gLT_@grupo.Key">
+            <div class="media-left">
+                <a href="@Url.Action("Detalles", "Obra", new { id = grupo.Key })" data-toggle="tooltip" title="Abrir Ficha" target="_blank"><b>@grupo.FirstOrDefault().ClaveObra</b></a>
+
+            </div>
+
+            <div class="media-body">
+
+                <ul class="media-list">
+                    @foreach (var item in grupo)
+                    {
+                        <li class="media LTHijo" id="itemLt_@item.PiezaID">
+                            <div class="media-left"><img src="@item.RutaImagen" alt="@item.ClaveObra" class="media-object img-mini"></div>
+                            <div class="media-body">
+                                <small class="media-heading"><b>@item.ClavePieza</b></small>
+                                <small class="center-block">@item.Titulo</small>
+                                <small class="center-block"><b>@item.Autor</b></small>
+                            </div>
+
+                            <a href="@Url.Action("PiezaDel", "Listado", new { PiezaID = item.PiezaID })" class="media-right LTHijo llamarRenderLTDEL" data-toggle="tooltip" title="Quitar Pieza"><i class="fa fa-times" id="contVertical"></i></a>
+
+                        </li>
+                    }
+                </ul>
+
+
+            </div>
+        </li>
+    }
+</ul>
+
+
+
+
+<script type="text/javascript">
+    $("a.llamarRenderLTDEL").one("click", function (e) {
+        $.ajaxSetup({ cache: false });
+        enviarInfoAjaxyRecargaLT($(this).attr('href'));
+        return false;
+    });
+</script>
+
+<script src="~/Scripts/holder.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+</script>

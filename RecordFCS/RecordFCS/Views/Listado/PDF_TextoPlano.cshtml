@@ -1,0 +1,42 @@
+﻿@model List<RecordFCS.Models.ViewsModel.itemListaBasicaDefault>
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_Html_PDF.cshtml";
+    //    var imagePath = Server.MapPath("~/Content/Images");
+}
+
+<h1>Titulo h1</h1>
+<span>Normal</span>
+<small>small</small>
+
+
+
+<table style="">
+    <tr style="background-color: #000000; color:white;">
+        <td><small>No. Inv</small></td>
+        <td><small>Obra</small></td>
+        <td><small>Titulo</small></td>
+        <td><small>Autor</small></td>
+        <td><small>Tecnica</small></td>
+        <td><small>Medida</small></td>
+        <td><small>Fecha</small></td>
+        <td><small>Ubicacion</small></td>
+
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td><small>@item.Pieza_clave</small></td>
+            <td><small>@item.Obra_clave</small></td>
+            <td><small>@item.Titulo</small></td>
+            <td><small>@item.Autor</small></td>
+            <td><small>@item.Tecnica</small></td>
+            <td><small>@item.Medida</small></td>
+            <td><small>@item.Fecha</small></td>
+            <td><small>@item.Ubicacion</small></td>
+
+        </tr>
+    }
+</table>

@@ -1,0 +1,153 @@
+﻿@model RecordFCS.Models.Pieza
+
+@{
+    ViewBag.PagName = "Editar";
+    ViewBag.CtrlName = ViewBag.campo;
+    ViewBag.Title = @ViewBag.PagName;
+    bool verBotonGuardar = true;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+@using (Html.BeginForm())
+{
+    <div class="modal-body">
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.PiezaID)
+            @Html.HiddenFor(model => model.ObraID)
+            @Html.HiddenFor(model => model.Clave)
+            @Html.HiddenFor(model => model.Status)
+            @Html.HiddenFor(model => model.FechaRegistro)
+            @Html.HiddenFor(model => model.AntID)
+
+            <input type="hidden" name="campo" id="campo" value="@ViewBag.campo" />
+
+            @if (ViewBag.campo == "TipoPiezaID")
+            {
+                if (User.IsInRole("AttTipoPiezaEdit"))
+                {
+                    @Html.HiddenFor(model => model.UbicacionID)
+                    <!-- Input BUSCAR -->
+                    @Html.Partial("_FormBuscar")
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TipoPiezaID, "TipoPiezaID", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <div id="renderCampoLista">
+                                    @{ Html.RenderAction("FormLista", "TipoPieza", new { busqueda = "", seleccion = Model.TipoPiezaID }); }
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.TipoPiezaID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    verBotonGuardar = false;
+
+                    <div class="text-center">
+                        <h3>NO TIENES LOS PRIVILEGIOS PARA MODIFICAR</h3>
+                        <h1 class="text-danger"><b>@ViewBag.campo</b></h1>
+                    </div>
+                }
+            }
+            else if (ViewBag.campo == "UbicacionID")
+            {
+                if (User.IsInRole("AttUbicacionEdit"))
+                {
+                    @Html.HiddenFor(model => model.TipoPiezaID)
+                <!-- Input BUSCAR -->
+                    @Html.Partial("_FormBuscar")
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.UbicacionID, "UbicacionID", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <div id="renderCampoLista">
+                                    @{ Html.RenderAction("FormLista", "Ubicacion", new { busqueda = "", seleccion = Model.UbicacionID }); }
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.UbicacionID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    verBotonGuardar = false;
+
+                    <div class="text-center">
+                        <h3>NO TIENES LOS PRIVILEGIOS PARA MODIFICAR</h3>
+                        <h1 class="text-danger"><b>@ViewBag.campo</b></h1>
+                    </div>
+                }
+
+
+            }
+            else
+            {
+                <span>Error al procesar</span>
+            }
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        @if (@verBotonGuardar)
+        {
+            <input class="btn btn-primary" type="submit" value="Guardar" />
+        }
+    </div>
+}
+
+
+@*EDITAR AUTOR PIEZA*@
+<script type="text/javascript">
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("#BuscarDato").on("keyup", function (e) {
+            buscarDatoAjax();
+        });
+        return false;
+    });
+
+    function buscarDatoAjax() {
+        var campo = $("#campo").val();
+        var myUrl = '';
+
+        switch (campo) {
+            case "TipoPiezaID":
+                myUrl = '@Url.Action("FormLista", "TipoPieza")';
+                break;
+            case "UbicacionID":
+                myUrl = '@Url.Action("FormLista", "Ubicacion")';
+                break;
+        }
+
+        $.ajax({
+            url: myUrl,
+            type: 'GET',
+            data: { busqueda: $("#BuscarDato").val() },
+            success: function (result) {
+                $('#renderCampoLista').html(result);
+            }
+        });
+
+    }
+
+</script>

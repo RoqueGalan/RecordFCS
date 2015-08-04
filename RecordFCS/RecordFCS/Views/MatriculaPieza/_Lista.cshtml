@@ -1,0 +1,88 @@
+﻿@model IEnumerable<RecordFCS.Models.MatriculaPieza>
+@using RecordFCS.Helpers
+
+<table class="table table-hover table-condensed table-anidada">
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <div id="renderMatricula_@item.PiezaID-@item.MatriculaID">
+                    @item.Matricula.Descripcion
+                </div>
+            </td>
+            
+            <td>
+                <div class="pull-right">
+                    @if (User.IsInRole("CatEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "MatriculaPieza", new { idPieza = item.PiezaID, idMatricula = item.MatriculaID }, htmlAttributes: new { data_modal = "", @class = "link link-info EditarMatriculaPieza" })
+
+                    }
+                    @if (User.IsInRole("AttPiezaEliminar"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "MatriculaPieza", new { idPieza = item.PiezaID, idMatricula = item.MatriculaID }, htmlAttributes: new { data_modal = "", @class = "link link-danger EditarMatriculaPieza" })
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+@*EDITAR TECNICA*@
+<script type="text/javascript">
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("a[data-modal].EditarMatriculaPieza").on("click", function (e) {
+            $('#myModalContent').load(this.href, function () {
+                $('#myModal').modal({
+                    /*backdrop: 'static',*/
+                    keyboard: true
+                }, 'show');
+                bindForm_editarMatriculaPieza(this);
+            });
+            return false;
+        });
+    });
+
+
+    function bindForm_editarMatriculaPieza(dialog) {
+        $('form', dialog).submit(function () {
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    if (result.success) {
+
+                        if (result.lista == "lista") {
+                            var renderID = '#render_MatriculaPieza-Lista_' + result.idPieza;
+                        } else {
+                            var renderID = '#renderMatricula_' + result.idPieza;
+                        }
+
+                        $(renderID).load(result.url); // campo que reemplazara + accion
+                        $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                        $('#myModal').modal('hide');
+
+
+                    } else {
+                        $('#myModalContent').html(result);
+                        $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                        bindForm_editarMatriculaPieza(dialog);
+                    }
+                }
+            });
+            return false;
+        });
+    }
+</script>
+
+

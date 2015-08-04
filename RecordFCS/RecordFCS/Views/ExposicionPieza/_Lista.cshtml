@@ -1,0 +1,90 @@
+﻿@model IEnumerable<RecordFCS.Models.ExposicionPieza>
+@using RecordFCS.Helpers
+
+<table class="table table-hover table-condensed table-anidada">
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <div id="renderExposicion_@item.PiezaID-@item.ExposicionID">
+                    @item.Exposicion.Nombre
+                </div>
+            </td>
+
+            <td>
+                <div class="pull-right">
+                    @if (User.IsInRole("CatEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "Exposicion", new { id = item.ExposicionID, idPieza = item.PiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-info EditarExposicionPieza" })
+                    }
+                    @if (User.IsInRole("AttPiezaEliminar"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "ExposicionPieza", new { idPieza = item.PiezaID, idCatalogo = item.ExposicionID }, htmlAttributes: new { data_modal = "", @class = "link link-danger EditarExposicionPieza" })
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+@if (User.IsInRole("CatEdit,AttPiezaEliminar"))
+{
+    @*EDITAR EXPOSICION*@
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+
+            // Abrir Modales en formulario PRE REGISTRO
+            $("a[data-modal].EditarExposicionPieza").on("click", function (e) {
+                $('#myModalContent').load(this.href, function () {
+                    $('#myModal').modal({
+                        /*backdrop: 'static',*/
+                        keyboard: true
+                    }, 'show');
+                    bindForm_editarExposicionPieza(this);
+                });
+                return false;
+            });
+        });
+
+
+        function bindForm_editarExposicionPieza(dialog) {
+            $('form', dialog).submit(function () {
+                $.ajax({
+                    url: this.action,
+                    type: this.method,
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        if (result.success) {
+
+                            if (result.lista == "lista") {
+                                var renderID = '#render_ExposicionPieza-Lista_' + result.idPieza;
+                            } else {
+                                var renderID = '#renderExposicion_' + result.idPieza;
+                            }
+
+                            $(renderID).load(result.url); // campo que reemplazara + accion
+                            $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                            $('#myModal').modal('hide');
+
+
+                        } else {
+                            $('#myModalContent').html(result);
+                            $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                            bindForm_editarExposicionPieza(dialog);
+                        }
+                    }
+                });
+                return false;
+            });
+        }
+    </script>
+
+
+}

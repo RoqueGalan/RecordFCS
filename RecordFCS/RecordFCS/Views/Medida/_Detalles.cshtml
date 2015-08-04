@@ -1,0 +1,19 @@
+﻿@model RecordFCS.Models.Medida
+
+@{
+    //11 x11 x11 x11Ø x11Øcm, 45kg
+    // make use of nullable class attribute values
+    var medida = Model.Largo.HasValue ? Model.Largo + "" : "0";
+    medida = Model.Ancho.HasValue ? medida + "x" + Model.Ancho : medida;
+    medida = Model.Profundidad.HasValue ? medida + "x" + Model.Profundidad : medida;
+
+    medida = Model.Diametro.HasValue ? medida + "x" + Model.Diametro + "Ø" : medida;
+    medida = Model.Diametro2.HasValue ? medida + "x" + Model.Diametro2 + "Ø" : medida;
+
+    medida = medida + Model.UMLongitud;
+
+    medida = Model.Peso.HasValue ? medida + ", " + Model.Peso + Model.UMMasa : medida;
+}
+
+
+@medida

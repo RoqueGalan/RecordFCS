@@ -1,0 +1,82 @@
+﻿@model IEnumerable<RecordFCS.Models.Tecnica>
+
+@{
+    ViewBag.Title = "ImportarCat_Tecnica";
+}
+<div class="well">
+    <h1>@ViewBag.NombreTabla</h1>
+    <p>@ViewBag.mensaje</p>
+</div>
+
+@if (ViewBag.error == "error")
+{
+    <h1>YA SE IMPORTO ESTE CATALOGO U OCURRIO UN PROBLEMA</h1>
+}
+else
+{
+    <h2>Importar Tecnicas </h2>
+    <p>Extraidos de la base vieja</p>
+    <p>Total: @ViewBag.TotalRegistros</p>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ClaveSiglas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClaveTexto)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.TecnicaPadre)
+                </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.MatriculaSiglas)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MatriculaTexto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClaveSiglas)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClaveTexto)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.TecnicaPadre)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.MatriculaSiglas)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MatriculaTexto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+}
+
+
+
+
+
+

@@ -1,0 +1,60 @@
+﻿@using RecordFCS.Helpers
+
+@{
+    string nombreLista = "req_list_" + ViewBag.TipoAtributoID;
+}
+
+<div class="col-md-7">
+    <div id="renderLista_@ViewBag.TipoAtributoID">
+        @Html.DropDownList(nombreLista, null, "- SELECCIONA UNA OPCION -", htmlAttributes: new { id = @nombreLista, name = @nombreLista, @class = "form-control", required = "required" })
+
+    </div>
+</div>
+
+<div class="col-md-5">
+    <div class="input-group">
+        <input id="filtro_@ViewBag.TipoAtributoID" name="filtro_@ViewBag.TipoAtributoID" type="text" placeholder="Filtrar Valores" class="form-control textoFiltro" />
+        @if (User.IsInRole("ObraRegNewValor"))
+        {
+            <span class="input-group-addon">
+                <input type="checkbox" id="aceptar_@ViewBag.TipoAtributoID" name="aceptar_@ViewBag.TipoAtributoID">
+            </span>
+            <span id="btnAgregar_@ViewBag.TipoAtributoID" data-toggle="tooltip" class="btn btn-success input-group-addon"><span class="fa fa-plus"></span></span>
+        }
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#req_list_@ViewBag.TipoAtributoID').filterByText($('#filtro_@ViewBag.TipoAtributoID'), true);
+    });
+</script>
+
+<script type="text/javascript">
+    $(function(){
+        $('#btnAgregar_' + @ViewBag.TipoAtributoID).on("click", function (e) {
+            var txt_Filtro = $('#filtro_' + @ViewBag.TipoAtributoID).val();
+            var myUrl = '@Url.Action("AgregarValor", "ListaValor")';
+            var chk_Aceptar = $('#aceptar_' + @ViewBag.TipoAtributoID).is(':checked') ? true : false;
+            var idAtt = @ViewBag.TipoAtributoID;
+            if(chk_Aceptar)
+            {
+                $.ajax({
+                    url: myUrl,
+                    type: "POST",
+                    data: { id : idAtt, valor: txt_Filtro, aceptar: chk_Aceptar },
+                    success: function (result) {
+                        if(result.success){
+                            $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+                            $('#req_list_' + @ViewBag.TipoAtributoID).append('<option val="'+ result.valor+'">'+result.texto+'</option>');
+                            $('#req_list_' + @ViewBag.TipoAtributoID).blur();
+                            $('#aceptar_' + @ViewBag.TipoAtributoID).removeAttr('checked');
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>

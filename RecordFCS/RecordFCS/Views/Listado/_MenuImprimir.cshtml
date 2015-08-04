@@ -1,0 +1,209 @@
+﻿@model RecordFCS.Models.ViewsModel.OpcionesImprimir
+
+@{
+    ViewBag.PagName = "Menu de impresión en ";
+    ViewBag.CtrlName = Model.Accion;
+}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName </b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+        <span class="badge">@Model.NoElementos</span>
+        <span> registros.</span>
+
+    </h4>
+</div>
+
+@using (Html.BeginForm("GenerarFormato", "Listado", FormMethod.Post, new { id = "FormImprimir", name = "FormImprimir" }))
+{
+    <div class="modal-body">
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.HiddenFor(model => model.Accion)
+            @Html.HiddenFor(model => model.NombreLista)
+            @Html.HiddenFor(model => model.NoElementos)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NoColumnas, "No. de Columnas", new { @class = "control-label col-md-2" })
+                <div class="col-lg-10">
+                    @Html.DropDownListFor(model => model.NoColumnas, new SelectList(new List<Object> { new { value = 1, text = "Una Columna" }, new { value = 2, text = "Dos Columnas" } }, "value", "text", Model.NoColumnas), new { @class = "form-control" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label">Datos</label>
+                <div class="col-lg-10">
+                    <div class="radio">
+                        <label class="col-md-4 col-sm-4 col-xs-4" for="MostrarDatos_0">
+                            @Html.RadioButtonFor(model => model.MostrarDatos, 0, new { id = "MostrarDatos_0", @class = "control-radio" })
+                            Básicos
+                        </label>
+
+                        <label class="col-md-4 col-sm-4 col-xs-4" for="MostrarDatos_1">
+                            @Html.RadioButtonFor(model => model.MostrarDatos, 1, new { id = "MostrarDatos_1", @class = "control-radio" })
+                            Completos
+                        </label>
+
+                        <div class="col-md-4 col-sm-4 col-xs-4">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label">Obra</label>
+                <div class="col-lg-10">
+                    <div class="checkbox">
+                        <label class="col-md-5 col-sm-5 col-xs-5">
+                            @Html.CheckBoxFor(model => model.IncluirPiezas)
+                            Incluir todas sus piezas
+                        </label>
+
+                        <label class="col-md-3 col-sm-3 col-xs-3" for="Unir_0">
+                            @Html.RadioButtonFor(model => model.Unir, 0, new { id = "Unir_0", @class = "control-radio" })
+                            Sin Unirlas
+                        </label>
+
+                        <label class="col-md-3 col-sm-3 col-xs-3" for="Unir_1">
+                            @Html.RadioButtonFor(model => model.Unir, 1, new { id = "Unir_1", @class = "control-radio" })
+                            Unirlas
+                        </label>
+                    </div>
+                    <span class="help-block">[Sin Unirlas] Imprime las piezas por separado de su obra</span>
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label">Adicional</label>
+                <div class="col-lg-10">
+                    <div class="checkbox">
+                        <label class="col-md-4 col-sm-4 col-xs-4">
+                            @Html.CheckBoxFor(model => model.Ubicacion)
+                            Ubicación Actual
+                        </label>
+
+
+                        <label class="col-md-4 col-sm-4 col-xs-4">
+                            @Html.CheckBoxFor(model => model.Fecha)
+                            Fecha
+                        </label>
+
+                        <label class="col-md-4 col-sm-4 col-xs-4">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label">Líneas</label>
+                <div class="col-lg-10">
+                    <div class="radio">
+
+                        <label class="col-md-4 col-sm-4 col-xs-4" for="Linea_0">
+                            @Html.RadioButtonFor(model => model.Linea, 0, new { id = "Linea_0", @class = "control-radio" })
+                            Ninguna
+                        </label>
+
+                        <label class="col-md-4 col-sm-4 col-xs-4" for="Linea_1">
+                            @Html.RadioButtonFor(model => model.Linea, 1, new { id = "Linea_1", @class = "control-radio" })
+                            Simple ______
+                        </label>
+
+                        <label class="col-md-4 col-sm-4 col-xs-4" for="Linea_2">
+                            @Html.RadioButtonFor(model => model.Linea, 2, new { id = "Linea_2", @class = "control-radio" })
+                            Recorte _ _ _ _
+                        </label>
+
+                    </div>
+                    <span class="help-block">Lineas que separan las Obras</span>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NombreLogotipo, "Logotipo", new { @class = "control-label col-md-2" })
+                <div class="col-lg-10">
+                    @Html.DropDownListFor(model => model.NombreLogotipo, new SelectList(new List<Object> { new { value = 1, text = "Record Museo Soumaya" }, new { value = 2, text = "Record Fundación Carlos Slim" } }, "value", "text", Model.NombreLogotipo), new { @class = "form-control" })
+
+                    <label>
+                        @Html.CheckBoxFor(model => model.FondoAgua)
+                        Incluirlo tambien como fondo de agua
+                    </label>
+                </div>
+            </div>
+
+
+
+            <div id="renderEspera"></div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary"><i class="fa fa-print"></i> Imprimir</button>
+
+    </div>
+}
+
+
+
+
+
+
+
+@*<script type="text/javascript">
+
+    $('#FormImprimir').submit(function () {
+
+        //alert(this.action);
+
+        $('#renderEspera').html('' +
+            '<div class="text-center">' +
+                '<p>' +
+                    '<span class="text-muted">' +
+                        'Por favor espere' +
+                    '</span>' +
+                '</p>' +
+                '<i class="fa fa-spinner fa-pulse fa-2x text-muted"></i>' +
+            '</div>');
+
+        $.ajax({
+            url: this.action,
+            type: this.method,
+            data: $(this).serialize(),
+            success: function (result) {
+
+                $('#FormImprimir').html('' +
+            '<div class="text-center">' +
+                '<p>' +
+                    '<span class="text-success">' +
+                        'Archivo Generado' +
+                    '</span>' +
+                '</p>' +
+                '</div>');
+
+                alert('got result');
+                window.open(result);
+
+            }
+        });
+        return false;
+    });
+
+</script>*@

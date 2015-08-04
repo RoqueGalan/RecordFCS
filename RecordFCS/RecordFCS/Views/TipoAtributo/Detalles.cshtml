@@ -1,0 +1,103 @@
+﻿@model RecordFCS.Models.TipoAtributo
+@using RecordFCS.Helpers
+
+@{
+    ViewBag.PagName = "CONFIGURACIÓN";
+    ViewBag.CtrlName = "Tipo de Atributo";
+    ViewBag.Title = @ViewBag.PagName + " - " + @Model.Nombre;
+}
+
+<h1>
+    <b>@ViewBag.PagName</b>
+    <i class="text-muted">@ViewBag.CtrlName</i>
+    <small class="text-danger">@Model.Nombre</small>
+
+</h1>
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@Html.ActionLink("Tipos de Atributo", "Index", "TipoAtributo")</li>
+    <li class="active">@Model.Nombre</li>
+    <li class="active">@ViewBag.PagName</li>
+</ol>
+
+
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreHTML)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreHTML)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DatoHTML)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DatoHTML)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DatoCS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DatoCS)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        @*<dd>
+            @Html.Partial("_RenderCampo", Model)
+        </dd>*@
+
+    </dl>
+
+</div>
+
+
+<!-- Campo que se reemplaza-->
+<div id="renderListaListaValor">
+    @{ Html.RenderAction("Lista", "ListaValor", new { id = Model.TipoAtributoID }); }
+</div>
+
+
+<!-- modal placeholder-->
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

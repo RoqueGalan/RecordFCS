@@ -1,0 +1,266 @@
+﻿@model RecordFCS.Models.Obra
+@using RecordFCS.Helpers
+@using RecordFCS.Models
+
+
+
+@{
+    ViewBag.PagName = "FICHA TÉCNICA";
+    ViewBag.CtrlName = "Obra";
+    ViewBag.Title = @ViewBag.PagName + " - " + @Model.Clave;
+}
+
+<h1>
+    <b>@ViewBag.PagName</b>
+    <i class="text-muted">@Model.TipoObra.Nombre</i>
+    <b class="text-primary pull-right">@Model.Clave</b>
+</h1>
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li class="active">@Model.TipoObra.Nombre</li>
+    <li class="active">@ViewBag.PagName</li>
+</ol>
+
+
+<div class="row">
+    <div class="col-md-2">
+
+        <div class="panel panel-inverse">
+            <div class="panel-heading text-center">O P C I O N E S</div>
+
+            <ul class="list-group">
+                <!-- BOTON AGREGAR UNA PIEZA A LA OBRA-->
+                @if (User.IsInRole("ObraAddPieza"))
+                {
+                    <li class="list-group-item clearfix">
+                        <b>
+                            Nueva Pieza 
+                            @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Agregar Nueva Pieza", "Crear", "Pieza", routeValues: new { obraID = Model.ObraID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success pull-right nuevaPieza" })
+</b>
+                    </li>
+
+                    /*MAS CAMPOS DE OPCIONES*/
+                    /*<li class="list-group-item"><li />*/
+
+                }
+
+            </ul>
+        </div>
+
+    </div>
+
+
+    <div class="col-md-10">
+        @foreach (var pieza in Model.Piezas)
+        {
+            <div id="renderPieza_@pieza.PiezaID">
+                @{ Html.RenderAction("Detalles", "Pieza", new { piezaID = pieza.PiezaID }); }
+            </div>
+        }
+    </div>
+</div>
+<!-- modal placeholder-->
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+<!-- modal placeholder-->
+<div id='myModal_lg' class='modal fade in ' data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div id='myModalContent_lg'></div>
+        </div>
+    </div>
+</div>
+
+
+
+@*CREAR NUEVA PIEZA*@
+
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("a[data-modal].nuevaPieza").on("click", function (e) {
+            // hide dropdown if any (this is used wehen invoking modal from link in bootstrap dropdown )
+            //$(e.target).closest('.btn-group').children('.dropdown-toggle').dropdown('toggle');
+
+            $('#myModalContent_lg').load(this.href, function () {
+                $('#myModal_lg').modal({
+                    /*backdrop: 'static',*/
+                    keyboard: true
+                }, 'show');
+            });
+            return false;
+        });
+    });
+
+</script>
+
+
+
+@*EDITAR PIEZA ATRIBUTO*@
+<script type="text/javascript">
+
+
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        // Abrir Modales en formulario PRE REGISTRO
+        $("a[data-modal].EditarAtributo").on("click", function (e) {
+            $('#myModalContent').load(this.href, function () {
+                $('#myModal').modal({
+                    /*backdrop: 'static',*/
+                    keyboard: true
+                }, 'show');
+                bindForm_editarAtributo(this);
+            });
+            return false;
+        });
+    });
+
+
+    function bindForm_editarAtributo(dialog) {
+        $('form', dialog).submit(function () {
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    if (result.success) {
+                        //var renderID = '#renderPieza_' + result.piezaID; //funciona con pieza
+
+                        var renderID = '#renderAtributo_' + result.idPieza + '-' + result.idAtributo;
+                        $(renderID).load(result.url); // campo que reemplazara + accion
+                        $('#myModal').modal('hide');
+
+
+                    } else {
+                        $('#myModalContent').html(result);
+                        bindForm_editarAtributo(dialog);
+                    }
+                }
+            });
+            return false;
+        });
+    }
+</script>
+
+
+@*EDITAR OBRA*@
+
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("a[data-modal].EditarObra").on("click", function (e) {
+
+            $('#myModalContent').load(this.href, function () {
+                $('#myModal').modal({
+                    /*backdrop: 'static',*/
+                    keyboard: true
+                }, 'show');
+                bindForm_editarObra(this);
+            });
+            return false;
+        });
+    });
+
+    function bindForm_editarObra(dialog) {
+        $('form', dialog).submit(function () {
+
+            //alert("url = " + this.action);
+            //alert("metodo = " + this.method);
+            //alert("datos = " + $(this).serialize());
+
+
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    if (result.success) {
+
+                        if (result.accion == "recarga") {
+                            location.reload();
+                        }
+                        else {
+                            //var renderID = '#renderPieza_' + result.piezaID; //funciona con pieza
+                            var renderID = '#renderObra_' + result.idObra + '-' + result.campo;
+                            $(renderID).load(result.url); // campo que reemplazara + accion
+                            $('#myModal').modal('hide');
+                        }
+                    } else {
+                        $('#myModalContent').html(result);
+                        bindForm_editarObra(dialog);
+                    }
+                }
+            });
+            return false;
+        });
+    }
+
+</script>
+
+
+
+@*EDITAR PIEZA*@
+
+<script type="text/javascript">
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("a[data-modal].EditarPieza").on("click", function (e) {
+
+            $('#myModalContent').load(this.href, function () {
+                $('#myModal').modal({
+                    /*backdrop: 'static',*/
+                    keyboard: true
+                }, 'show');
+                bindForm_editarObra(this);
+            });
+            return false;
+        });
+    });
+
+    function bindForm_editarPieza(dialog) {
+        $('form', dialog).submit(function () {
+
+            alert("url = " + this.action);
+            alert("metodo = " + this.method);
+            alert("datos = " + $(this).serialize());
+
+
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    if (result.success) {
+
+                        if (result.accion == "recarga") {
+                            location.reload();
+                        }
+                        else {
+                            //var renderID = '#renderPieza_' + result.piezaID; //funciona con pieza
+                            var renderID = '#renderPieza_' + result.idPieza + '-' + result.campo;
+                            $(renderID).load(result.url); // campo que reemplazara + accion
+                            $('#myModal').modal('hide');
+                        }
+                    } else {
+                        $('#myModalContent').html(result);
+                        bindForm_editarPieza(dialog);
+                    }
+                }
+            });
+            return false;
+        });
+    }
+
+</script>

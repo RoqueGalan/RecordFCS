@@ -1,0 +1,92 @@
+﻿@model IEnumerable<RecordFCS.Models.TecnicaPieza>
+@using RecordFCS.Helpers
+
+<table class="table table-hover table-condensed table-anidada">
+    
+    @foreach (var item in Model)
+    {
+        
+    
+        <tr>
+            <td>
+                <div id="renderTecnica_@item.PiezaID-@item.TecnicaID">
+                        @item.Tecnica.Descripcion
+                </div>
+            </td>
+
+            <td>
+                <div class="pull-right">
+                    @if (User.IsInRole("CatEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "TecnicaPieza", new { idPieza = item.PiezaID, idTecnica = item.TecnicaID }, htmlAttributes: new { data_modal = "", @class = "link link-info EditarTecnicaPieza" })
+
+                    }
+                    @if (User.IsInRole("AttPiezaEliminar"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "TecnicaPieza", new { idPieza = item.PiezaID, idTecnica = item.TecnicaID }, htmlAttributes: new { data_modal = "", @class = "link link-danger EditarTecnicaPieza" })
+                    }
+                </div>
+            </td>
+
+
+
+        </tr>
+    }
+
+</table>
+
+
+@*EDITAR TECNICA*@
+<script type="text/javascript">
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("a[data-modal].EditarTecnicaPieza").on("click", function (e) {
+            $('#myModalContent').load(this.href, function () {
+                $('#myModal').modal({
+                    /*backdrop: 'static',*/
+                    keyboard: true
+                }, 'show');
+                bindForm_editarTecnicaPieza(this);
+            });
+            return false;
+        });
+    });
+
+
+    function bindForm_editarTecnicaPieza(dialog) {
+        $('form', dialog).submit(function () {
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    if (result.success) {
+
+                        if (result.lista == "lista") {
+                            var renderID = '#render_TecnicaPieza-Lista_' + result.idPieza;
+                        } else {
+                            var renderID = '#renderTecnica_' + result.idPieza;
+                        }
+
+                        $(renderID).load(result.url); // campo que reemplazara + accion
+                        $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                        $('#myModal').modal('hide');
+
+
+                    } else {
+                        $('#myModalContent').html(result);
+                        $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                        bindForm_editarTecnicaPieza(dialog);
+                    }
+                }
+            });
+            return false;
+        });
+    }
+</script>
+
+

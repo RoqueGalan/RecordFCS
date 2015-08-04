@@ -1,0 +1,14 @@
+﻿
+<div class="well">
+    <h1>@ViewBag.NombreTabla</h1>
+    <p>@ViewBag.mensaje</p>
+</div>
+
+@if (ViewBag.error == "error")
+{
+    <h1>YA SE IMPORTO ESTE CATALOGO</h1>
+}
+else
+{
+    <h1>SE REALIZO LA CARGA</h1>
+}

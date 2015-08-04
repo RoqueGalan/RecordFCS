@@ -1,0 +1,89 @@
+﻿@model IEnumerable<RecordFCS.Models.CatalogoPieza>
+@using RecordFCS.Helpers
+
+<table class="table table-hover table-condensed table-anidada">
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <div id="renderCatalogo_@item.PiezaID-@item.CatalogoID">
+                    @item.Catalogo.Nombre
+                </div>
+            </td>
+
+            <td>
+                <div class="pull-right">
+                    @if (User.IsInRole("CatEdit"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "Catalogo", new { id = item.CatalogoID, idPieza = item.PiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-info EditarCatalogoPieza" })
+                    }
+                    @if (User.IsInRole("AttPiezaEliminar"))
+                    {
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "CatalogoPieza", new { idPieza = item.PiezaID, idCatalogo = item.CatalogoID }, htmlAttributes: new { data_modal = "", @class = "link link-danger EditarCatalogoPieza" })
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+@if (User.IsInRole("CatEdit,AttPiezaEliminar"))
+{
+    @*EDITAR CATALOGO*@
+    <script type="text/javascript">
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+
+            // Abrir Modales en formulario PRE REGISTRO
+            $("a[data-modal].EditarCatalogoPieza").on("click", function (e) {
+                $('#myModalContent').load(this.href, function () {
+                    $('#myModal').modal({
+                        /*backdrop: 'static',*/
+                        keyboard: true
+                    }, 'show');
+                    bindForm_editarCatalogoPieza(this);
+                });
+                return false;
+            });
+        });
+
+
+        function bindForm_editarCatalogoPieza(dialog) {
+            $('form', dialog).submit(function () {
+                $.ajax({
+                    url: this.action,
+                    type: this.method,
+                    data: $(this).serialize(),
+                    success: function (result) {
+                        if (result.success) {
+
+                            if (result.lista == "lista") {
+                                var renderID = '#render_CatalogoPieza-Lista_' + result.idPieza;
+                            } else {
+                                var renderID = '#renderCatalogo_' + result.idPieza;
+                            }
+
+                            $(renderID).load(result.url); // campo que reemplazara + accion
+                            $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                            $('#myModal').modal('hide');
+
+
+                        } else {
+                            $('#myModalContent').html(result);
+                            $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                            bindForm_editarCatalogoPieza(dialog);
+                        }
+                    }
+                });
+                return false;
+            });
+        }
+    </script>
+
+}

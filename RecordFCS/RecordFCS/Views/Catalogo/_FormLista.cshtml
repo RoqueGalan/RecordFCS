@@ -1,0 +1,12 @@
+﻿@if (ViewBag.totalValores == 0)
+{
+    <p>
+        <span><b class="text-warning">NO SE ENCONTRARON COINCIDENCIAS</b></span>
+    </p>
+}
+else
+{
+    @Html.DropDownList("CatalogoID", null, "", htmlAttributes: new { @class = "form-control" })
+}
+
+

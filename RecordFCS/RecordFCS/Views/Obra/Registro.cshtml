@@ -1,0 +1,168 @@
+﻿@using RecordFCS.Helpers
+
+<script src="~/Scripts/FuncionFiltradoLista.js"></script>
+
+@{
+    ViewBag.PagName = "Registrar";
+    ViewBag.CtrlName = "Obra";
+    ViewBag.Title = @ViewBag.PagName + ViewBag.CtrlName;
+}
+
+<h1>
+    <b>@ViewBag.PagName</b>
+    <i class="text-muted">@ViewBag.CtrlName</i>
+</h1>
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@ViewBag.CtrlName</li>
+    <li class="active">@ViewBag.PagName</li>
+</ol>
+
+@using (Html.BeginForm("Registro", "Obra", FormMethod.Post, new { id = "formRegistroObra", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <input type="hidden" id="Folio" name="Folio" value="@ViewBag.Folio" />
+        <div class="row">
+
+            <div class="col-lg-7 col-sm-6">
+                <span class="pull-left">
+                    <b>FOLIO: </b>
+                    @ViewBag.Folio
+                    <i class="fa fa-question" data-toggle="tooltip" data-original-title="Folio provisional, al terminar el registro se reasignara."></i>
+                </span>
+            </div>
+            <div class="col-lg-5 col-sm-6">
+                <span class="pull-right">
+                    <b>Fecha de Registro: </b>
+                    @DateTime.Now.ToShortDateString()
+                </span>
+            </div>
+            <hr />
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-lg-2">
+                <div class="text-center">
+                    <span class="fa fa-8x fa-edit text-muted"></span>
+                </div>
+            </div>
+
+            <div class="col-lg-10">
+                <div class="form-group">
+                    <label for="TipoObraID" class="control-label col-md-2">Tipo de Obra</label>
+                    <div class="col-md-10">
+                        @Html.DropDownList("TipoObraID", null, "- SELECCIONA TIPO DE OBRA -", htmlAttributes: new { @class = "form-control SelectTipoObra", required = "required" })
+                    </div>
+                </div>
+
+                <div id="renderTipoPiezaMaestras"></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+
+                <div id="renderIcono">
+                    <div class="text-center">
+                        <span class="fa fa-5x fa-arrow-up text-primary"></span>
+                        <h4>
+                            <i class="text-muted">
+                                Selecciona el TIPO DE OBRA que deseas <b>registrar</b>.
+                            </i>
+                        </h4>
+                    </div>
+                </div>
+
+                <div id="renderAtributosRequeridos">
+                    <div class="text-center">
+                        <span class="fa fa-10x fa-list-alt text-muted"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+}
+<!-- modal placeholder-->
+<div id='myModal' class='modal fade in'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    //logica para renderizar el CAMPO tipo de pieza maestra
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+        $('#TipoObraID').change(function () {
+            var strSelecto = "";
+
+            $('#TipoObraID option:selected').each(function () {
+                strSelecto += $(this)[0].value;
+            });
+
+            if (strSelecto != "" || strSelecto != 0) {
+                var myUrl = '@Url.Action("RenderTipoPiezaMaestra", "TipoPieza")';
+
+                $.ajax({
+                    url: myUrl,
+                    type: "POST",
+                    data: { id: strSelecto },
+                    success: function (result) {
+                        $('#renderTipoPiezaMaestras').html(result);
+                        $('#renderIcono').html('' +
+                            '<div class="text-center">' +
+                                '<span class="fa fa-4x fa-arrow-up text-primary"></span>' +
+                                '<p>' +
+                                    '<i class="text-muted">' +
+                                        'Selecciona la PLANTILLA.' +
+                                    '</i>' +
+                                '</p>' +
+                            '</div>');
+                        $('#renderAtributosRequeridos').html('' +
+                                   '<div class="text-center">' +
+                                       '<span class="fa fa-10x fa-list-alt text-muted"></span>' +
+                                   '</div>');
+                    }
+                });
+            } else {
+                $('#renderIcono').html('' +
+                            '<div class="text-center">' +
+                                '<span class="fa fa-5x fa-arrow-up text-primary"></span>' +
+                                '<p>' +
+                                    '<i class="text-muted">' +
+                                        'Selecciona el TIPO DE OBRA que deseas <b>registrar</b>.' +
+                                    '</i>' +
+                                '</p>' +
+                            '</div>');
+
+                $('#renderTipoPiezaMaestras').html('');
+
+                $('#renderAtributosRequeridos').html('' +
+                                   '<div class="text-center">' +
+                                       '<span class="fa fa-10x fa-list-alt text-muted"></span>' +
+                                   '</div>');
+            }
+
+        });
+        return false;
+    });
+</script>
+
+

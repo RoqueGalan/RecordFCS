@@ -1,0 +1,30 @@
+﻿@using RecordFCS.Models
+@model IEnumerable<Atributo>
+
+
+@foreach (var atributo in Model)
+{
+    <li>
+            <label class="control-label col-md-2" for="@atributo.TipoAtributo.NombreHTML">@atributo.TipoAtributo.Nombre</label>
+
+
+                @if (atributo.TipoAtributo.EsLista)
+                {
+                    <select class="form-control" id="@atributo.TipoAtributo.NombreHTML" name="@atributo.TipoAtributo.NombreHTML">
+                        @foreach (var listaValor in atributo.TipoAtributo.ListaValores)
+                        {
+                            <option value="@listaValor.ListaValorID">@listaValor.Valor</option>
+
+                        }
+                    </select>
+
+
+                }
+                else
+                {
+                    <input class="form-control text-box single-line" id="@atributo.TipoAtributo.NombreHTML" name="@atributo.TipoAtributo.NombreHTML" type="@atributo.TipoAtributo.DatoHTML" value="" />
+                }
+                    <span class="field-validation-valid text-danger" data-valmsg-for="@atributo.TipoAtributo.NombreHTML" data-valmsg-replace="true"></span>
+                
+    </li>
+}

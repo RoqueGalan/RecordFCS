@@ -1,0 +1,45 @@
+﻿@using RecordFCS.Helpers
+@using RecordFCS.Models.ViewsModel
+@model List<itemPiezaGenerica>
+
+@Styles.Render("~/Content/css")
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/bundles/jquery")
+
+<table class="table table-condensed table-striped table-responsive">
+    <tr class="inverse">
+        <td>Obra</td>
+        <td>Pieza</td>
+
+        @foreach (var campo in Model.FirstOrDefault().itemPiezaGenericaCampos)
+        {
+            if (@campo.NombreCampo != "Imagen")
+            {
+                <td>@campo.NombreCampo</td>
+            }
+        }
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td><small>@item.ObraClave</small></td>
+            <td><small>@item.PiezaClave</small></td>
+            @foreach (var campo in item.itemPiezaGenericaCampos)
+            {
+                if (@campo.NombreCampo != "Imagen")
+                {
+                    <td><small>@campo.ValorCampo</small></td>
+                }
+
+            }
+        </tr>
+    }
+
+</table>
+
+
+
+
+@Scripts.Render("~/bundles/bootstrap")

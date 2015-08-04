@@ -1,0 +1,132 @@
+﻿@model RecordFCS.Models.Pieza
+<script src="~/Scripts/FuncionFiltradoLista.js"></script>
+
+@{
+    ViewBag.PagName = "Crear";
+    ViewBag.CtrlName = "Pieza";
+    ViewBag.Title = @ViewBag.PagName;
+}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+@using (Html.BeginForm("Crear", "Pieza", FormMethod.Post, new { id = "formCrearPieza", enctype = "multipart/form-data" }))
+{
+    <div class="modal-body">
+        @Html.AntiForgeryToken()
+        
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ObraID)
+            @Html.HiddenFor(model => model.Status)
+            <input type="hidden" id="Folio" name="Folio" value="@ViewBag.folio" />
+
+            <div class="row">
+
+                <div class="col-lg-7 col-sm-6">
+                    <span class="pull-left">
+                        <b>FOLIO: </b>
+                        <span id="folioText">Sin Definir</span>
+                        <i class="fa fa-question" data-toggle="tooltip" data-original-title="Folio provisional, al terminar el registro se reasignara."></i>
+                    </span>
+                </div>
+                <div class="col-lg-5 col-sm-6">
+                    <span class="pull-right">
+                        <b>Fecha de Registro: </b>
+                        @DateTime.Now.ToShortDateString()
+                    </span>
+                </div>
+                <hr />
+            </div>
+
+            
+
+            <div class="form-group">
+                <label for="TipoPiezaID" class="control-label col-md-2">Tipo de Pieza</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("TipoPiezaID", null, "- SELECCIONA TIPO DE PIEZA -", htmlAttributes: new { @class = "form-control SelectTipoObra", required = "required" })
+                    @Html.ValidationMessageFor(model => model.TipoPiezaID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div id="renderAtributosRequeridos">
+                <div class="text-center">
+                    <span class="fa fa-10x fa-list-alt text-muted"></span>
+                </div>
+            </div>
+
+
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.Clave, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Clave, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Clave, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UbicacionID, "UbicacionID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("UbicacionID", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.UbicacionID, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        </div>
+    </div>
+}
+
+
+<script type="text/javascript">
+    //logica para renderizar los campos requeridos
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+        $('#TipoPiezaID').change(function () {
+            var strSelecto = "";
+            var strObraID = $('#ObraID').val();
+
+            //alert(strObraID);
+            $('#TipoPiezaID option:selected').each(function () {
+                strSelecto += $(this)[0].value;
+            });
+
+            if (strSelecto != "" || strSelecto != 0) {
+                var myUrl = '@Url.Action("AtributosRequeridos", "TipoPieza")';
+
+                $('#renderAtributosRequeridos').html('' +
+                            '<div class="text-center">' +
+                                '<span class="fa fa-5x fa-spinner fa-pulse text-muted"></span>' +
+                                '<p>' +
+                                    '<i class="text-muted">' +
+                                        'Por favor espera, se esta procesando la solicitud...' +
+                                    '</i>' +
+                                '</p>' +
+                            '</div>');
+
+                $.ajax({
+                    url: myUrl,
+                    type: "POST",
+                    data: { id: strSelecto, obraID: strObraID },
+                    success: function (result) {
+
+                        $('#renderAtributosRequeridos').html(result);
+                    }
+                });
+
+            } else {
+
+                $('#renderAtributosRequeridos').html('' +
+                    '<div class="text-center">' +
+                        '<span class="fa fa-10x fa-list-alt text-muted"></span>' +
+                    '</div>');
+            }
+        });
+        return false;
+    });
+</script>

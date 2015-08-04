@@ -1,0 +1,330 @@
+﻿@model RecordFCS.Models.Pieza
+@using RecordFCS.Helpers
+
+<div class="well clearfix">
+    <div class="barraSuperior @ViewBag.ColorBarra"></div>
+
+    @*<h3>
+            <span class="text-muted">No. Inventario </span> @Model.Obra.Clave
+            @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar Pieza", "Eliminar", "Obra", routeValues: new { id = Model.ObraID }, htmlAttributes: new { data_modal = "", @class = "btn btn-danger btn-xs pull-right editarObra" })
+            @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar Pieza", "Editar", "Obra", routeValues: new { id = Model.ObraID }, htmlAttributes: new { data_modal = "", @class = "btn btn-info btn-xs pull-right editarObra" })
+        </h3>*@
+
+    <div class="label label-default text-uppercase pull-right labelTipoObra">
+        @if (Model.TipoPieza.EsMaestra)
+        {
+            <span>
+                <b>
+                    @if (Model.TipoPieza.Nombre == "Maestra")
+                    {
+                        @Model.Obra.TipoObra.Nombre
+                    }
+                    else
+                    {
+                        @:Maestra
+                    }
+                </b>
+            </span>
+            <span>
+                -
+                @Model.Obra.Clave
+            </span>
+        }
+        else
+        {
+            <span>
+                <b>
+                    @Model.TipoPieza.Nombre
+                </b>
+            </span>
+            <span>
+                -
+                @Model.Clave
+            </span>
+        }
+    </div>
+
+
+    <div class="row">
+
+        <!-- Imagenes -->
+        <div class="col-md-4">
+            <div id="renderCarrusel_@Model.PiezaID" class="text-center">
+                @{ Html.RenderAction("Carrusel", "ImagenPieza", new { id = Model.PiezaID, status = false, tipo = "thumb" }); }
+            </div>
+
+
+
+        </div>
+        <!--  -->
+
+        <div class="col-md-8">
+            <table class="table table-hover table-condensed">
+
+                <!-- Atributos CATALOGOS de la PIEZA-->
+                @foreach (var atributoPieza in Model.AtributoPiezas)
+                {
+                    if (atributoPieza.Atributo.TipoAtributo.DatoHTML == "Catalogo")
+                    {
+                        if (atributoPieza.Atributo.TipoAtributo.AntNombre != "m_pieza_foto")
+                        {
+                            <tr>
+                                <td class="text-right">
+                                    <!-- No mostrar el AGREGAR si es TECNICAPIEZA y si tiene VALOR-->
+                                    <b class="text-muted">@atributoPieza.Atributo.TipoAtributo.NombreHTML </b>
+                                    @if (User.IsInRole("AttPiezaAdd"))
+                                    {
+                                        @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear", "Crear", atributoPieza.Atributo.TipoAtributo.DatoCS, routeValues: new { id = Model.PiezaID }, htmlAttributes: new { data_modal = "", @class = "link link-success btn-xs Editar" + atributoPieza.Atributo.TipoAtributo.DatoCS })
+                                    }
+                                </td>
+
+                                <td>
+                                    <div id="render_@atributoPieza.Atributo.TipoAtributo.DatoCS-Lista_@Model.PiezaID">
+                                        @{ Html.RenderAction("Lista", @atributoPieza.Atributo.TipoAtributo.DatoCS, new { id = Model.PiezaID }); }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                    }
+                    else if (atributoPieza.Atributo.TipoAtributo.DatoHTML == "Obra")
+                    {
+                        <!-- Atributos estaticos de la OBRA-->
+                        switch (atributoPieza.Atributo.TipoAtributo.DatoCS)
+                        {
+                            case "ColeccionID":
+                                <tr>
+                                    <td class="text-right">
+                                        <b class="text-muted">@Html.DisplayNameFor(model => model.Obra.Coleccion.Nombre) </b>
+                                        @if (User.IsInRole("AttObraEdit"))
+                                        {
+                                            @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "Obra", routeValues: new { obraID = Model.ObraID, campo = atributoPieza.Atributo.TipoAtributo.DatoCS }, htmlAttributes: new { data_modal = "", @class = "link link-success btn-xs EditarObra" })
+                                        }
+                                    </td>
+                                    <td>
+                                        <div id="renderObra_@Model.ObraID-@atributoPieza.Atributo.TipoAtributo.DatoCS">
+                                            <span>@Html.DisplayFor(model => model.Obra.Coleccion.Nombre)</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                        break;
+
+                            case "Clave":
+                            <tr>
+                                <td class="text-right">
+                                    <b class="text-muted">@Html.DisplayNameFor(model => model.Obra.Clave)</b>
+                                </td>
+                                <td>
+                                    <div id="renderObra_@Model.ObraID-@atributoPieza.Atributo.TipoAtributo.DatoCS">
+                                        <span>@Html.DisplayFor(model => model.Obra.Clave)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                                        break;
+
+                            case "TipoObraID":
+                            <tr>
+                                <td class="text-right">
+                                    <b class="text-muted">@Html.DisplayNameFor(model => model.Obra.TipoObra.Nombre) </b>
+                                    @if (User.IsInRole("AttObraEdit"))
+                                    {
+                                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "Obra", routeValues: new { obraID = Model.ObraID, campo = atributoPieza.Atributo.TipoAtributo.DatoCS }, htmlAttributes: new { data_modal = "", @class = "link link-success btn-xs EditarObra" })
+                                    }
+                                </td>
+                                <td>
+                                    <div id="renderObra_@Model.ObraID-@atributoPieza.Atributo.TipoAtributo.DatoCS">
+                                        <span>@Html.DisplayFor(model => model.Obra.TipoObra.Nombre)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                                    break;
+
+                            case "TipoAdquisicionID":
+                            <tr>
+                                <td class="text-right">
+
+                                    <b class="text-muted">@Html.DisplayNameFor(model => model.Obra.TipoAdquisicion.Nombre) </b>
+                                    @if (User.IsInRole("AttObraEdit"))
+                                    {
+                                        @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "Obra", routeValues: new { obraID = Model.ObraID, campo = atributoPieza.Atributo.TipoAtributo.DatoCS }, htmlAttributes: new { data_modal = "", @class = "link link-success btn-xs EditarObra" })
+                                    }
+                                </td>
+                                <td>
+                                    <div id="renderObra_@Model.ObraID-@atributoPieza.Atributo.TipoAtributo.DatoCS">
+                                        <span>@Html.DisplayFor(model => model.Obra.TipoAdquisicion.Nombre)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                                    break;
+
+                            case "PropietarioID":
+                                    if (User.IsInRole("VerAttPropietario"))
+                                    {
+                                        <tr>
+                                            <td class="text-right">
+                                                <b class="text-muted">@Html.DisplayNameFor(model => model.Obra.Propietario.Nombre) </b>
+                                                @if (User.IsInRole("AttObraEdit"))
+                                                {
+                                                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "Obra", routeValues: new { obraID = Model.ObraID, campo = atributoPieza.Atributo.TipoAtributo.DatoCS }, htmlAttributes: new { data_modal = "", @class = "link link-success btn-xs EditarObra" })
+                                                }
+                                            </td>
+                                            <td>
+                                                <div id="renderObra_@Model.ObraID-@atributoPieza.Atributo.TipoAtributo.DatoCS">
+                                                    <span>@Html.DisplayFor(model => model.Obra.Propietario.Nombre)</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                    break;
+
+                            case "FechaRegistro":
+                            <tr>
+                                <td class="text-right">
+                                    <b class="text-muted">@Html.DisplayNameFor(model => model.Obra.FechaRegistro)</b>
+                                </td>
+                                <td>
+                                    <div id="renderObra_@Model.ObraID-@atributoPieza.Atributo.TipoAtributo.DatoCS">
+                                        <span>@Html.DisplayFor(model => model.Obra.FechaRegistro)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                                    break;
+                            case "Status":
+                            <tr>
+                                <td class="text-right">
+                                    <b class="text-muted">@Html.DisplayNameFor(model => model.Obra.Status) </b>
+                                    @*@if (User.IsInRole("AttStatusObraEdit"))
+                                        {
+                                            @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "Obra", routeValues: new { obraID = Model.ObraID, campo = atributoPieza.Atributo.TipoAtributo.DatoCS }, htmlAttributes: new { data_modal = "", @class = "link link-success btn-xs EditarObra" })
+                                        }*@
+                                </td>
+                                <td>
+                                    <div id="renderObra_@Model.ObraID-@atributoPieza.Atributo.TipoAtributo.DatoCS">
+                                        <span>@Html.DisplayFor(model => model.Obra.Status)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                                    break;
+                            default:
+                            <tr>
+                                <td>
+                                    <b class="text-muted">@atributoPieza.Atributo.TipoAtributo.NombreHTML</b>
+                                </td>
+                                <td>No se encontro</td>
+                            </tr>
+                                    break;
+                        }
+
+
+                    }
+                    else if (atributoPieza.Atributo.TipoAtributo.DatoHTML == "Pieza")
+                    {
+                        <!-- Atributos estaticos de la PIEZA-->
+                        switch (atributoPieza.Atributo.TipoAtributo.DatoCS)
+                        {
+                            case "Clave":
+                                <tr>
+                                    <td class="text-right">
+                                        <b class="text-muted">@Html.DisplayNameFor(model => model.Clave)</b>
+                                    </td>
+                                    <td>
+                                        <span>@Html.DisplayFor(model => model.Clave)</span>
+                                    </td>
+                                </tr>
+                                break;
+
+                            case "TipoPieza":
+                            <tr>
+                                <td class="text-right">
+                                    <b class="text-muted">@Html.DisplayNameFor(model => model.TipoPieza.Nombre)</b>
+                                </td>
+                                <td>
+                                    <span>@Html.DisplayFor(model => model.TipoPieza.Nombre)</span>
+                                </td>
+                            </tr>
+                                break;
+
+                            case "Ubicacion":
+                            <tr>
+                                <td class="text-right">
+                                    <b class="text-muted">@Html.DisplayNameFor(model => model.Ubicacion.Nombre)</b>
+                                </td>
+                                <td>
+                                    <span>@Html.DisplayFor(model => model.Ubicacion.Nombre)</span>
+                                </td>
+                            </tr>
+                                break;
+
+                            case "Status":
+                            <tr>
+                                <td class="text-right">
+                                    <b class="text-muted">@Html.DisplayNameFor(model => model.Status)</b>
+                                </td>
+                                <td>
+                                    <span>@Html.DisplayFor(model => model.Status)</span>
+                                </td>
+                            </tr>
+                                break;
+
+
+
+                        }
+
+                    }
+                    else
+                    {
+                       <!-- Atributos variables de la PIEZA-->
+                        <tr>
+                            <td class="text-right">
+                                <b class="text-muted">@atributoPieza.Atributo.TipoAtributo.Nombre</b>
+                                @if (User.IsInRole("AttPiezaEdit"))
+                                {
+                                    @Html.NoEncodeActionLink("<span class='fa fa-pencil'></span>", "Editar", "Editar", "AtributoPieza", new { idPieza = Model.PiezaID, idAtributo = atributoPieza.AtributoID }, htmlAttributes: new { data_modal = "", @class = "link link-info btn-xs EditarAtributo" })
+                                }
+                            </td>
+                            <td>
+                                <div id="renderAtributo_@Model.PiezaID-@atributoPieza.AtributoID" class="table-hover">
+                                    @{ Html.RenderAction("Detalles", "AtributoPieza", new { idPieza = atributoPieza.PiezaID, idAtributo = atributoPieza.AtributoID }); }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+
+                <tr>
+
+                    @if (User.IsInRole("PiezaStatus") && !Model.TipoPieza.EsMaestra)
+                    {
+                        <td class="text-right">
+                            <b class="text-muted">Cambiar Estado</b>
+                        </td>
+
+                        <td>
+                            @Html.NoEncodeActionLink("<span class='fa fa-check'></span>", "Activar Pieza", "CambiarStatus", "Pieza", routeValues: new { id = Model.PiezaID, Estado = true }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs EditarObra" })
+                            @Html.NoEncodeActionLink("<span class='fa fa-times'></span>", "Desactivar Pieza", "CambiarStatus", "Pieza", routeValues: new { id = Model.PiezaID, Estado = false }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs EditarObra" })
+                        </td>
+
+                    }
+                    @if (User.IsInRole("ObraStatus") && Model.TipoPieza.EsMaestra)
+                    {
+                        <td class="text-right">
+                            <b class="text-muted">Cambiar Estado</b>
+                        </td>
+
+                        <td>
+                            @Html.NoEncodeActionLink("<span class='fa fa-check'></span>", "Activar Obra", "CambiarStatus", "Obra", routeValues: new { id = Model.ObraID, Estado = true }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-success btn-xs EditarObra" })
+                            @Html.NoEncodeActionLink("<span class='fa fa-times'></span>", "Desactivar Obra", "CambiarStatus", "Obra", routeValues: new { id = Model.ObraID, Estado = false }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "link link-inverse btn-xs EditarObra" })
+                        </td>
+                    }
+
+                </tr>
+
+            </table>
+
+
+        </div>
+
+    </div>
+
+
+</div>

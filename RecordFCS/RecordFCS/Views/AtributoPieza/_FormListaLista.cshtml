@@ -1,0 +1,39 @@
+﻿@model RecordFCS.Models.AtributoPieza
+@using RecordFCS.Helpers
+
+<div id="renderCampo">
+    <div class="form-group">
+        @Html.LabelFor(model => model.ListaValorID, "ListaValorID", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="input-group">
+                <div id="renderListaValor_@Model.AtributoID">
+                    @{ Html.RenderAction("FormLista", "ListaValor", new { idTipoAtributo = Model.Atributo.TipoAtributoID, seleccion = Model.ListaValorID }); }
+                </div>
+                <a href="@Url.Action("FormListaAccion", "Atributopieza", new { idPieza = Model.PiezaID, idAtributo = Model.AtributoID, accion = "campo" })" id="formAccion"><span class='fa fa-plus btn btn-success btn-xs'></span></a>
+            </div>
+            @Html.ValidationMessageFor(model => model.ListaValorID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    //Paginador cargar vista parcial en el div
+    $(function () {
+        $.ajaxSetup({ cache: false });
+
+        $("a #formAccion").on("click", function (e) {
+            $.ajax({
+                url: $(this).attr("href"),
+                type: 'GET',
+                success: function (result) {
+                    $('#renderCampo').html(result);
+                }
+            });
+            return false;
+        });
+    });
+
+</script>
+
+

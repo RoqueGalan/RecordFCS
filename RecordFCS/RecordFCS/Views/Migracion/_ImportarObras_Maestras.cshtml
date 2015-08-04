@@ -1,0 +1,61 @@
+﻿@model List<RecordFCS.Models.ModelsMigracion.m_pieza>
+
+@{
+    ViewBag.Title = "ImportarObras_Maestras";
+}
+
+<h2>ImportarObras_Maestras</h2>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>
+            <h3>@item.id_pieza</h3>
+            <ul>
+                <li><b>REGISTRO</b></li>
+                <li>Matricula_Clave: @item.Matricula_Clave</li>
+                <li>id_pieza: @item.id_pieza</li>
+                <li>TipoAdquisicion_Clave: @item.TipoAdquisicion_Clave</li>
+                <li>MatriculaTecnica_Clave: @item.MatriculaTecnica_Clave</li>
+                <li>cve_usuario: @item.cve_usuario</li>
+                <li>Ubicacion_Clave: @item.Ubicacion_Clave</li>
+                <li>UbicacionActual: @item.UbicacionActual</li>
+                <li>Propietario_Clave: @item.Propietario_Clave</li>
+                <li>TipoObjeto_Clave: @item.TipoObjeto_Clave</li>
+                <li>fecha_registro_ORI: @item.fecha_registro_ORI</li>
+                <li>estatus: @item.estatus</li>
+                <li>otr_ubic: @item.otr_ubic</li>
+                <li>fecha_ingreso: @item.fecha_ingreso</li>
+                <li>fecha_registro: @item.fecha_registro</li>
+                <li>pieza_treg: @item.pieza_treg</li>
+                <li>tmp: @item.tmp</li>
+                <li>usu_id_cap: @item.usu_id_cap</li>
+                <li>baja: @item.baja</li>
+                <li>cInventario: @item.cInventario</li>
+                <li>ClassColeccion_Clave: @item.ClassColeccion_Clave</li>
+                <li>cInvestigacion: @item.cInvestigacion</li>
+
+                <li><b>DESCRIPTIVO</b></li>
+                <li>Autor_Clave: @item.Autor_Clave</li>
+                <li>titulo: @item.titulo</li>
+                <li>EscArtistica_Clave: @item.EscArtistica_Clave</li>
+                <li>FormaAdquisicion_Clave: @item.FormaAdquisicion_Clave</li>
+                <li>Procedencia_Clave: @item.Procedencia_Clave</li>
+                <li>FiliacionEstilistica_Clave: @item.FiliacionEstilistica_Clave</li>
+                <li>CasaComercial_Clave: @item.CasaComercial_Clave</li>
+                <li>EdoConservacion_Clave: @item.EdoConservacion_Clave</li>
+                <li>descripcion: @item.descripcion</li>
+                <li>grafica: @item.grafica</li>
+                <li>otros_materiales: @item.otros_materiales</li>
+                <li>catalogo: @item.catalogo</li>
+                <li>numero_catalogo: @item.numero_catalogo</li>
+                <li>palabra_clave: @item.palabra_clave</li>
+                <li>cve_marco: @item.cve_marco</li>
+                <li>numero_registro: @item.numero_registro</li>
+                <li>titulo_ori: @item.titulo_ori</li>
+                <li>Procedencia: @item.Procedencia</li>
+            </ul>
+    </li>
+    }
+</ul>
+

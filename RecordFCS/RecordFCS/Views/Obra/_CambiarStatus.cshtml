@@ -1,0 +1,47 @@
+﻿@model RecordFCS.Models.Obra
+
+@{
+    ViewBag.CtrlName = "Obra";
+    ViewBag.Title = @ViewBag.PagName;
+}
+
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">
+        <b>@ViewBag.PagName</b>
+        <i class="text-muted">@ViewBag.CtrlName</i>
+    </h4>
+</div>
+
+@using (Html.BeginForm())
+{
+    <div class="modal-body">
+
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ObraID)
+            <input type="hidden" id="Estado" name="Estado" value="@ViewBag.Estado" />
+
+            <div class="text-center">
+                <h3>
+                    ¿Quieres
+                    <b class="text-danger">
+                        @ViewBag.PagName
+                    </b>
+                    la Obra?
+                </h3>
+            </div>
+
+            
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn" type="button" data-dismiss="modal">Cancelar</button>
+        <input class="btn btn-primary" type="submit" value="Aceptar" />
+    </div>
+}

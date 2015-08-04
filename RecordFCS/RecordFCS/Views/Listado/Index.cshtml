@@ -1,0 +1,208 @@
+﻿@using RecordFCS.Models
+@using RecordFCS.Models.ViewsModel
+@using RecordFCS.Helpers
+
+@{
+    ViewBag.Title = "Generar Listas";
+}
+
+<h1>
+    <b>Generar Listas de Obras ó Piezas</b>
+</h1>
+
+<ol class="breadcrumb">
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li class="active">@ViewBag.Title</li>
+</ol>
+
+
+<div class="row">
+
+    <div class="col-lg-3 col-md-3 col-sm-3">
+
+        <div id="TabAcciones" class="tab-content">
+            <div class="tab-pane fade active in" id="MenuAcciones">
+                ACCIONES A REALIZAR
+                <ul>
+                    <li>Agregarlas a Coleccion</li>
+                    <li>Agregarlas a Exposición (Guión)</li>
+                    <li>Activarlas</li>
+                    <li>Desactivarlas</li>
+                    <li>Generar Movimiento</li>
+                </ul>
+                <a href="#FormAcciones" data-toggle="tab" aria-expanded="false">Mostrar Formulario</a>
+
+                <div id="renderMenuFiltros">
+                    @{ Html.RenderAction("MenuFiltros", "Buscador", new { rutaVista = "_ResultadosBusqueda_Listado" }); }
+                </div>
+
+            </div>
+
+            <div class="tab-pane fade" id="FormAcciones">
+
+                FORMULARIO PARA CADA ACCION
+                <a href="#MenuAcciones" data-toggle="tab" aria-expanded="false">Regresar</a>
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+    <div class="col-lg-9 col-md-9 col-sm-9">
+
+        <div class="col-lg-6 col-md-6 col-sm-6">
+
+
+            <h4>
+                <b class="text-muted">Resultado de Piezas</b>
+            </h4>
+
+
+            <div id="render_resultadoPiezas">
+                @*<ul>
+                    @foreach (var item in Session["listaP"] as List<Pieza>)
+                    {
+                        <li>
+                            @Html.ActionLink(item.PiezaID.ToString(), "PiezaAdd", "Listado", new { PiezaID = item.PiezaID }, new { @Class = "llamarRenderLTAdd" })
+                        </li>
+                    }
+                </ul>*@
+            </div>
+        </div>
+
+
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div id="contenedor_ListaTemporal" class="">
+                <div class="contentlt_head">
+                    <h4>
+                        <b class="text-muted">Nueva Lista Temporal</b>
+                        <span class="link link-success fa fa-08x fa-refresh" id="recargaListaTemporal" data-toggle="tooltip" title="Recargar Lista"></span>
+                        <span id="TotalLT" data-toggle="tooltip" title="Mostrar/Ocultar" class="badge pull-right MOLT">0</span>
+                    </h4>
+                </div>
+
+                <div id="render_listaTemporal">
+
+                </div>
+
+                <span id="MOLT" data-toggle="tooltip" title="Mostrar/Ocultar" class="fa fa-expand fa-flip-horizontal"></span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+<script type="text/javascript">
+
+    window.onload = RecargaListaTemporal();
+
+
+
+    function enviarInfoAjaxyRecargaLT(link) {
+        $.ajax({
+            url: link,
+            type: 'GET',
+            success: function (result) {
+                if (result.success) {
+                    $('#alertasDiv').load('@Url.Action("_Alertas","Base")');
+
+                    if (result.recarga) {
+                        RecargaListaTemporal();
+                    }
+                }
+            }
+        });
+    }
+
+
+    $("#MOLT").on("click", function (e) {
+        $('#ULLT').toggle('slow');
+        return false;
+    });
+
+    $("#recargaListaTemporal").on("click", function (e) {
+        RecargaListaTemporal();
+    });
+
+
+    function RecargaListaTemporal() {
+        var myUrl = '@Url.Action("RenderListaTemporal","Listado",null)';
+        var contenedor = '#render_listaTemporal';
+        //$(render_listaTemporal).html('Cargando Lista....');
+        $(contenedor).load(myUrl);
+    }
+</script>
+
+
+
+<script type="text/javascript">
+
+    $('#FormFiltros').submit(function () {
+
+        //alert(this.action);
+
+        $('#render_resultadoPiezas').html('' +
+            '<div class="text-center">' +
+                '<p>' +
+                    '<span class="text-muted">' +
+                        'Por favor espere' +
+                    '</span>' +
+                '</p>' +
+                '<i class="fa fa-spinner fa-pulse fa-12x text-muted"></i>' +
+                '<p>' +
+                    'Se estan procedando los resultados...' +
+                '</p>' +
+            '</div>');
+
+        //alert(this.action);
+
+        $('#pag').val(1);
+        var myUrl = '@Url.Action("MostrarResultadosListado","Buscador",null)';
+        $.ajax({
+            url: myUrl,
+            type: this.method,
+            data: $(this).serialize(),
+            success: function (result) {
+                $('#render_resultadoPiezas').html(result); //  Campo que actualizara
+            }
+        });
+        return false;
+    });
+
+</script>
+
+
+
+@*<script type="text/javascript">
+
+        $('#FormFiltros').submit(function () {
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (result) {
+                    $('#renderResultadosBusqueda').html(result); //  Campo que actualizara
+                }
+            });
+            return false;
+        });
+
+    </script>*@
+
+
+
+
+
+
+
+
+

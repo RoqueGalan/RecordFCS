@@ -1,0 +1,40 @@
+﻿@model RecordFCS.Models.AtributoPieza
+@using RecordFCS.Helpers
+
+<div id="renderCampo">
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="NuevoValor">Nuevo Valor</label>
+        <div class="col-md-10">
+            <div class="input-group">
+                <div id="renderListaValor_@Model.AtributoID">
+                    <input name="NuevoValor" class="form-control text-box single-line" id="NuevoValor" type="text" value="0" data-val-required="El campo NuevoValor es obligatorio." data-val="true">
+                </div>
+                <a href="@Url.Action("FormListaAccion", "Atributopieza", new { idPieza = Model.PiezaID, idAtributo = Model.AtributoID, accion = "lista" })" id="formAccion"><span class='fa fa-plus btn btn-success btn-xs'></span></a>
+
+            </div>
+            <span class="field-validation-valid text-danger" data-valmsg-replace="true" data-valmsg-for="NuevoValor"></span>
+        </div>
+    </div>
+
+
+</div>
+    @*<script type="text/javascript">
+
+        //Paginador cargar vista parcial en el div
+        $(function () {
+            $.ajaxSetup({ cache: false });
+
+            $("a #formAccion").on("click", function (e) {
+                $.ajax({
+                    url: $(this).attr("href"),
+                    type: 'GET',
+                    success: function (result) {
+                        $('#renderCampo').html(result);
+                    }
+                });
+                return false;
+            });
+        });
+
+    </script>*@
