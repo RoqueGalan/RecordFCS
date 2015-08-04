@@ -131,6 +131,50 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Alerta.cs" />
+    <Compile Include="Helpers\CampoPieza.cs" />
+    <Compile Include="Helpers\HTMLHelpers.cs" />
+    <Compile Include="Helpers\MultiButtonAttribute.cs" />
+    <Compile Include="Helpers\RutaImagen.cs" />
+    <Compile Include="Helpers\Seguridad\BaseViewPage.cs" />
+    <Compile Include="Helpers\Seguridad\CustomAuthorizeAttribute.cs" />
+    <Compile Include="Helpers\Seguridad\ICustomPrincipal.cs" />
+    <Compile Include="Helpers\Structs.cs" />
+    <Compile Include="Helpers\Thumbnail.cs" />
+    <Compile Include="Models\Atributo.cs" />
+    <Compile Include="Models\AtributoPieza.cs" />
+    <Compile Include="Models\Autor.cs" />
+    <Compile Include="Models\AutorPieza.cs" />
+    <Compile Include="Models\Catalogo.cs" />
+    <Compile Include="Models\CatalogoPieza.cs" />
+    <Compile Include="Models\Coleccion.cs" />
+    <Compile Include="Models\Exposicion.cs" />
+    <Compile Include="Models\ExposicionPieza.cs" />
+    <Compile Include="Models\Historial\log_Historial.cs" />
+    <Compile Include="Models\Historial\log_Objeto.cs" />
+    <Compile Include="Models\Historial\log_ObjetoAtributosAdicional.cs" />
+    <Compile Include="Models\ImagenPieza.cs" />
+    <Compile Include="Models\ListaValor.cs" />
+    <Compile Include="Models\Matricula.cs" />
+    <Compile Include="Models\MatriculaPieza.cs" />
+    <Compile Include="Models\Medida.cs" />
+    <Compile Include="Models\Obra.cs" />
+    <Compile Include="Models\Permiso.cs" />
+    <Compile Include="Models\Pieza.cs" />
+    <Compile Include="Models\Propietario.cs" />
+    <Compile Include="Models\RecordFCSContext.cs" />
+    <Compile Include="Models\Tecnica.cs" />
+    <Compile Include="Models\TecnicaMarco.cs" />
+    <Compile Include="Models\TecnicaMarcoPieza.cs" />
+    <Compile Include="Models\TecnicaPieza.cs" />
+    <Compile Include="Models\TipoAdquisicion.cs" />
+    <Compile Include="Models\TipoAtributo.cs" />
+    <Compile Include="Models\TipoMedida.cs" />
+    <Compile Include="Models\TipoObra.cs" />
+    <Compile Include="Models\TipoPermiso.cs" />
+    <Compile Include="Models\TipoPieza.cs" />
+    <Compile Include="Models\Ubicacion.cs" />
+    <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -181,7 +225,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
