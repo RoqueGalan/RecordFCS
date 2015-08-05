@@ -1,4 +1,5 @@
-﻿using RecordFCS.Models;
+﻿using RecordFCS.Helpers;
+using RecordFCS.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,6 +37,14 @@ namespace RecordFCS.Controllers
             ViewBag.Message = "Página Acerca de.";
 
             return View();
+        }
+
+        [WordDocument]
+        public ActionResult AboutDocument()
+        {
+            ViewBag.Message = "Página Acerca de.";
+            ViewBag.WordDocumentFilename = "AboutMeDocument";
+            return View("About");
         }
 
 

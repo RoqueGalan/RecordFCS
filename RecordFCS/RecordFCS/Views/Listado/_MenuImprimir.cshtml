@@ -15,7 +15,7 @@
     </h4>
 </div>
 
-@using (Html.BeginForm("GenerarFormato", "Listado", FormMethod.Post, new { id = "FormImprimir", name = "FormImprimir" }))
+@using (Html.BeginForm("GenerarFormato", "Listado", FormMethod.Post, new { id = "FormImprimir", name = "FormImprimir", target = "_blank" }))
 {
     <div class="modal-body">
 
@@ -167,11 +167,12 @@
 
 
 
-@*<script type="text/javascript">
+<script type="text/javascript">
 
     $('#FormImprimir').submit(function () {
 
         //alert(this.action);
+        var datos = "";
 
         $('#renderEspera').html('' +
             '<div class="text-center">' +
@@ -198,12 +199,18 @@
                 '</p>' +
                 '</div>');
 
-                alert('got result');
-                window.open(result);
 
+                var win = window.open('about:blank');
+
+                with (win.document) {
+                    open();
+                    write(result);
+                    close();
+                }
             }
         });
+
         return false;
     });
 
-</script>*@
+</script>

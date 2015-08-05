@@ -2,44 +2,77 @@
 @using RecordFCS.Models.ViewsModel
 @model List<itemPiezaGenerica>
 
-@Styles.Render("~/Content/css")
-<link href="~/Content/font-awesome.css" rel="stylesheet" />
-@Scripts.Render("~/bundles/modernizr")
-@Scripts.Render("~/bundles/jquery")
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado - Record</title>
+    @Styles.Render("~/Content/css")
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+</head>
+<body>
+    <div class="container">
+        <div class="pull-right">
+            <img src="~/@ViewBag.logo" />
+        </div>
+        <div>
+            <table class="table table-condensed table-striped table-responsive">
+                <tr class="inverse">
+                    <td><small>Obra</small></td>
+                    <td><small>Pieza</small></td>
 
-<table class="table table-condensed table-striped table-responsive">
-    <tr class="inverse">
-        <td>Obra</td>
-        <td>Pieza</td>
+                    @foreach (var campo in Model.FirstOrDefault().itemPiezaGenericaCampos)
+                    {
+                        if (@campo.NombreCampo != "Imagen")
+                        {
+                            <td><small>@campo.NombreCampo</small></td>
+                        }
+                    }
+                </tr>
 
-        @foreach (var campo in Model.FirstOrDefault().itemPiezaGenericaCampos)
-        {
-            if (@campo.NombreCampo != "Imagen")
-            {
-                <td>@campo.NombreCampo</td>
-            }
-        }
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td><small>@item.ObraClave</small></td>
-            <td><small>@item.PiezaClave</small></td>
-            @foreach (var campo in item.itemPiezaGenericaCampos)
-            {
-                if (@campo.NombreCampo != "Imagen")
+                @foreach (var item in Model)
                 {
-                    <td><small>@campo.ValorCampo</small></td>
+                    <tr>
+                        <td><small>@item.ObraClave</small></td>
+                        <td><small>@item.PiezaClave</small></td>
+                        @foreach (var campo in item.itemPiezaGenericaCampos)
+                        {
+                            if (@campo.NombreCampo != "Imagen")
+                            {
+                                <td><small>@campo.ValorCampo</small></td>
+                            }
+
+                        }
+                    </tr>
                 }
 
-            }
-        </tr>
-    }
-
-</table>
+            </table>
 
 
+            <hr />
+            <p class="text-center">
+                <small>
+                    PLAZA CARSO - Blvd. Miguel de Cervantes Saavedra 303, Col. Ampliación Granada C.P. 11529 México D.F. - Tels. 1103 9800 - www.museosoumaya.com
+                </small>
+            </p>
+
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/bootstrap")
+
+</body>
 
 
-@Scripts.Render("~/bundles/bootstrap")
+
+
+
+
+
+
+
+
+
+</html>

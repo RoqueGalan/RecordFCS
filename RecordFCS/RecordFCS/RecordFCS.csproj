@@ -179,6 +179,7 @@
     <Compile Include="Helpers\Seguridad\ICustomPrincipal.cs" />
     <Compile Include="Helpers\Structs.cs" />
     <Compile Include="Helpers\Thumbnail.cs" />
+    <Compile Include="Helpers\WordDocumentAttribute.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Atributo.cs" />
     <Compile Include="Models\AtributoPieza.cs" />
@@ -240,6 +241,8 @@
     <Content Include="Content\img\home\carrusel\img-2.jpg" />
     <Content Include="Content\img\home\carrusel\img-3.jpg" />
     <Content Include="Content\img\home\carrusel\img-4.jpg" />
+    <Content Include="Content\img\listado\headFCS_plano.png" />
+    <Content Include="Content\img\listado\headMS_plano.gif" />
     <Content Include="Content\img\logoFundacionCarlosSlim.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
@@ -510,6 +513,7 @@
     <Content Include="Views\Usuario\_Eliminar.cshtml" />
     <Content Include="Views\Usuario\_IniciarSesion.cshtml" />
     <Content Include="Views\Usuario\_Lista.cshtml" />
+    <Content Include="Views\Shared\_LayoutWord.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

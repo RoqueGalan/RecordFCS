@@ -207,10 +207,10 @@ namespace RecordFCS.Controllers
                         var listaCampos = new List<itemPiezaGenericaCampo>();
 
                         if (opcion.MostrarDatos == 0)
-                            listaAtributos = grupo.Key.Atributos.Where(a => a.EnFichaBasica && a.Status).OrderBy(b=>b.Orden);
+                            listaAtributos = grupo.Key.Atributos.Where(a => a.EnFichaBasica && a.Status).OrderBy(b => b.Orden);
                         else
                             listaAtributos = grupo.Key.Atributos.Where(a => a.Status);
-                        
+
                         //recorrer pieza a pieza
                         foreach (var pieza in grupo)
                         {
@@ -246,7 +246,7 @@ namespace RecordFCS.Controllers
 
                             //crear sus atributos que tendre la pieza generica
                             //var imagen_tmp = new itemPiezaGenericaCampo() { Orden = 0, itemPiezaGenerica = x, PiezaID = x.PiezaID, NombreCampo = "Imagen", ValorCampo = pieza.Imagen == null ? RutaImagen.RutaMini_Default : pieza.Imagen.RutaThumb };
-                        
+
 
 
                         }
@@ -321,8 +321,8 @@ namespace RecordFCS.Controllers
             }
 
 
-      
-            
+
+
 
 
             //if (opcion.Unir == 1)
@@ -345,6 +345,12 @@ namespace RecordFCS.Controllers
             }
 
 
+
+            //logo
+            if (opcion.NombreLogotipo == 1)
+                ViewBag.logo = "Content/img/listado/headMS_plano.gif";
+            else
+                ViewBag.logo = "Content/img/listado/headFCS_plano.png";
 
 
             //if (opcion.Accion == "Plano")

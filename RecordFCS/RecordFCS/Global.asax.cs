@@ -43,14 +43,14 @@ namespace RecordFCS
             }
         }
 
-        protected void Session_End(object sender, EventArgs e)
-        {
-            System.Web.Security.FormsAuthentication.SignOut();
-            System.Web.Security.FormsAuthentication.RedirectToLoginPage();
+        //protected void Session_End(object sender, EventArgs e)
+        //{
+        //    System.Web.Security.FormsAuthentication.SignOut();
+        //    System.Web.Security.FormsAuthentication.RedirectToLoginPage();
 
-            HttpContext.Current.Response.Redirect("~/");
+        //    HttpContext.Current.Response.Redirect("~/");
 
-            //Response.Redirect("~/");
-        }
+        //    //Response.Redirect("~/");
+        //}
     }
 }
