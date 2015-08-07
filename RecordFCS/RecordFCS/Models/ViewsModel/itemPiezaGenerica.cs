@@ -13,6 +13,7 @@ namespace RecordFCS.Models.ViewsModel
         public long ObraID { get; set; }
         public string PiezaClave { get; set; }
         public string ObraClave { get; set; }
+        public string RutaImagen { get; set; }
 
         public virtual List<itemPiezaGenericaCampo> itemPiezaGenericaCampos { get; set; }
     }

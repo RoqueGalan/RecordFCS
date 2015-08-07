@@ -1,0 +1,50 @@
+﻿@using RecordFCS.Helpers
+@using RecordFCS.Models.ViewsModel
+@model List<itemPiezaGenerica>
+
+@Styles.Render("~/Content/css")
+<link href="~/Content/list_Etiqueta.css" rel="stylesheet" />
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+@Scripts.Render("~/bundles/modernizr")
+@Scripts.Render("~/bundles/jquery")
+
+
+<div class="container">
+
+    @foreach (var item in Model)
+    {
+        <div class="well well-sm contenedor-etiqueta">
+            <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
+
+                    <img src="@item.RutaImagen" alt="@item.PiezaID" class="img-etiqueta" />
+                </div>
+
+                <div class="col-lg-10 col-md-9 col-sm-8 col-xs-8">
+                    <table>
+                        <tr>
+                            <td>
+                                <b>@item.ObraClave</b> - @item.PiezaClave
+                            </td>
+                        </tr>
+                        @foreach (var campo in item.itemPiezaGenericaCampos)
+                        {
+                            <tr>
+                                <td>
+                                    @campo.ValorCampo
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    }
+
+
+</div>
+
+
+@Scripts.Render("~/bundles/bootstrap")

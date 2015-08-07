@@ -241,9 +241,12 @@
     <Content Include="Content\img\home\carrusel\img-2.jpg" />
     <Content Include="Content\img\home\carrusel\img-3.jpg" />
     <Content Include="Content\img\home\carrusel\img-4.jpg" />
+    <Content Include="Content\img\listado\bgMS_color.png" />
+    <Content Include="Content\img\listado\bgMS_gris.png" />
     <Content Include="Content\img\listado\headFCS_plano.png" />
     <Content Include="Content\img\listado\headMS_plano.gif" />
     <Content Include="Content\img\logoFundacionCarlosSlim.png" />
+    <Content Include="Content\list_Etiqueta.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -262,6 +265,7 @@
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\FontAwesome.otf" />
+    <None Include="Properties\PublishProfiles\RecordFCS.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\FuncionFiltradoLista.js" />
     <Content Include="Scripts\holder.js" />
@@ -514,6 +518,7 @@
     <Content Include="Views\Usuario\_IniciarSesion.cshtml" />
     <Content Include="Views\Usuario\_Lista.cshtml" />
     <Content Include="Views\Shared\_LayoutWord.cshtml" />
+    <Content Include="Views\Listado\_ListaEtiquetas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

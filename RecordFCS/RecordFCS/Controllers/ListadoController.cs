@@ -197,19 +197,18 @@ namespace RecordFCS.Controllers
             {
                 case "Word":
                 case "Imprimir":
-                case "Etiquetas":
+                case "Etiqueta":
 
                     //Basicos - FichaBasica
                     //saber cuales son los atributos basicos de cada pieza
                     foreach (var grupo in listaPiezas.GroupBy(a => a.TipoPieza).ToList())
                     {
                         IEnumerable<Atributo> listaAtributos = null;
-                        var listaCampos = new List<itemPiezaGenericaCampo>();
 
                         if (opcion.MostrarDatos == 0)
-                            listaAtributos = grupo.Key.Atributos.Where(a => a.EnFichaBasica && a.Status).OrderBy(b => b.Orden);
+                            listaAtributos = grupo.Key.Atributos.Where(a => a.EnFichaBasica && a.Status).OrderBy(b => b.Orden).ToList();
                         else
-                            listaAtributos = grupo.Key.Atributos.Where(a => a.Status);
+                            listaAtributos = grupo.Key.Atributos.Where(a => a.Status).ToList();
 
                         //recorrer pieza a pieza
                         foreach (var pieza in grupo)
@@ -218,7 +217,7 @@ namespace RecordFCS.Controllers
                             var x = new itemPiezaGenerica()
                             {
                                 ObraID = pieza.ObraID,
-                                ObraClave = grupo.Key.Clave,
+                                ObraClave = pieza.Obra.Clave,
                                 PiezaID = pieza.PiezaID,
                                 PiezaClave = pieza.Clave,
                                 itemPiezaGenericaCampos = new List<itemPiezaGenericaCampo>()
@@ -227,27 +226,142 @@ namespace RecordFCS.Controllers
                             //agregar sus atributos
                             foreach (var att in listaAtributos)
                             {
-                                //var campo = new itemPiezaGenericaCampo()
-                                //{
-                                //    itemPiezaGenerica = x,
-                                //    PiezaID = x.PiezaID,
-                                //    NombreCampo = att.TipoAtributo.Nombre
-                                //};
+                                var campo = new itemPiezaGenericaCampo()
+                                {
+                                    itemPiezaGenerica = x,
+                                    PiezaID = x.PiezaID,
+                                    NombreCampo = att.TipoAtributo.Nombre,
+                                    Orden = att.Orden
+                                };
 
-                                ////extraer los valores
-                                //switch (att.TipoAtributo)
-                                //{
-                                //    default:
-                                //        break;
-                                //}
+                                //extraer los valores
 
+                                switch (att.TipoAtributo.AntNombre)
+                                {
+                                    case "TipoObjeto_Clave":
+                                        campo.ValorCampo = pieza.Obra.TipoObra.Nombre;
+                                        break;
+                                    case "TipoPieza_Clave":
+                                        campo.ValorCampo = pieza.TipoPieza.Nombre;
+                                        break;
+                                    case "m_pieza_coleccion":
+                                        if (pieza.Obra.ColeccionID != null)
+                                            campo.ValorCampo = pieza.Obra.Coleccion.Nombre;
+                                        break;
+                                    case "ClassColeccion_Clave":
+                                        //PENDIENTE POR IMPLEMENTAR
+                                        break;
+                                    case "Autor_Clave":
+                                        foreach (var item in pieza.AutorPiezas)
+                                        {
+                                            campo.ValorCampo += item.Autor.Nombre + " " + item.Autor.Apellido + " ";
+                                        }
+                                        break;
+                                    case "m_pieza_dimensiones":
+                                        foreach (var item in pieza.Medidas)
+                                        {
+                                            var medida = item.Largo.HasValue ? item.Largo + "" : "";
+                                            medida += item.Ancho.HasValue ? "x" + item.Ancho : "";
+                                            medida += item.Profundidad.HasValue ? "x" + item.Profundidad : "";
+                                            medida += item.Diametro.HasValue ? "x" + item.Diametro + "Ø" : "";
+                                            medida += item.Diametro2.HasValue ? "x" + item.Diametro2 + "Ø" : "";
+                                            medida += item.UMLongitud;
+                                            medida += item.Peso.HasValue ? ", " + item.Peso + item.UMMasa : "";
 
+                                            campo.ValorCampo += medida;
+                                        }
+                                        break;
+                                    case "m_cats":
+                                        foreach (var item in pieza.CatalogoPiezas)
+                                        {
+                                            campo.ValorCampo += item.Catalogo.Nombre + " ";
+                                        }
+                                        break;
+                                    case "m_guion_det":
+                                        foreach (var item in pieza.ExposicionPiezas)
+                                        {
+                                            campo.ValorCampo += item.Exposicion.Nombre + " ";
+                                        }
+                                        break;
+                                    case "MatriculaTecnica_Clave":
+                                        foreach (var item in pieza.TecnicaPiezas)
+                                        {
+                                            campo.ValorCampo += item.Tecnica.Descripcion + " ";
+                                        }
+                                        break;
+                                    case "Matricula_Clave":
+                                        foreach (var item in pieza.MatriculaPieza)
+                                        {
+                                            campo.ValorCampo += item.Matricula.Descripcion + " ";
+                                        }
+                                        break;
+                                    case "MTecnicaMarco_Clave":
+                                        foreach (var item in pieza.TecnicaMarcoPieza)
+                                        {
+                                            campo.ValorCampo += item.TecnicaMarco.Descripcion + " ";
+                                        }
+                                        break;
+                                    case "fecha_registro_ORI":
+                                        campo.ValorCampo = pieza.Obra.FechaRegistro.ToString();
+                                        break;
+                                    case "fecha_registro":
+                                        campo.ValorCampo = pieza.FechaRegistro.ToString();
+                                        break;
+                                    case "catTipoAdquisicion":
+                                        if (pieza.Obra.TipoAdquisicionID != null)
+                                        {
+                                            campo.ValorCampo = pieza.Obra.TipoAdquisicion.Nombre;
+                                        }
+                                        break;
+                                    case "Propietario_Clave":
+                                        if (pieza.Obra.PropietarioID != null)
+                                        {
+                                            campo.ValorCampo = pieza.Obra.Propietario.Nombre.ToString();
+                                        }
+                                        break;
+                                    case "Ubicacion_Clave (OBRA)":
+                                        if (pieza.UbicacionID != null)
+                                        {
+                                            campo.ValorCampo = pieza.Ubicacion.Nombre;
+                                        }
+                                        break;
+                                    case "estatus":
+                                    case "estatus_pieza":
+                                        campo.ValorCampo = pieza.Status ? "Activa" : "Desactivada";
+                                        break;
+
+                                    case "m_pieza_foto":
+                                        var Imagen = pieza.ImagenPiezas.FirstOrDefault();
+                                        x.RutaImagen = Imagen == null ? RutaImagen.RutaMini_Default : Imagen.RutaThumb;
+                                        break;
+
+                                    default:
+                                        if (att.TipoAtributo.NombreID == "Generico")
+                                        {
+                                            var attPieza = pieza.AtributoPiezas.SingleOrDefault(a => a.AtributoID == att.AtributoID);
+                                            if (attPieza != null)
+                                            {
+                                                if (att.TipoAtributo.EsLista)
+                                                {
+                                                    if (attPieza.ListaValorID != null)
+                                                        campo.ValorCampo = attPieza.ListaValor.Valor;
+                                                }
+                                                else
+                                                    campo.ValorCampo = attPieza.Valor;
+                                            }
+                                        }
+                                        break;
+                                }
+
+                                if (!string.IsNullOrWhiteSpace(campo.ValorCampo))
+                                {
+                                    x.itemPiezaGenericaCampos.Add(campo);
+                                }
                             }
 
-                            //crear sus atributos que tendre la pieza generica
-                            //var imagen_tmp = new itemPiezaGenericaCampo() { Orden = 0, itemPiezaGenerica = x, PiezaID = x.PiezaID, NombreCampo = "Imagen", ValorCampo = pieza.Imagen == null ? RutaImagen.RutaMini_Default : pieza.Imagen.RutaThumb };
-
-
+                            x.itemPiezaGenericaCampos = x.itemPiezaGenericaCampos.OrderBy(a => a.Orden).ToList();
+                            //agregar la pieza generica a la lista
+                            listaPiezasGenerica.Add(x);
 
                         }
 
@@ -330,6 +444,7 @@ namespace RecordFCS.Controllers
             //    var listaPiezasAgrupada = listaPiezas.GroupBy(a => a.Obra).ToList();
             //}
 
+            listaPiezasGenerica = listaPiezasGenerica.OrderBy(a=> a.ObraID).ToList();
 
 
 
@@ -341,6 +456,12 @@ namespace RecordFCS.Controllers
                 case "Plano":
                 default:
                     vista = PartialView("_ListaTextoPlano", listaPiezasGenerica);
+                    break;
+
+                case "Word":
+                case "Imprimir":
+                case "Etiqueta":
+                    vista = PartialView("_ListaEtiquetas",listaPiezasGenerica);
                     break;
             }
 
