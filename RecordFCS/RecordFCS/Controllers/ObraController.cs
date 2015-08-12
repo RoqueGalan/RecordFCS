@@ -124,7 +124,7 @@ namespace RecordFCS.Controllers
             Obra obra = new Obra();
 
             //ultimo registro + 1
-            Obra ultimo = db.Obras.ToList().LastOrDefault();
+            var ultimo = db.Obras.Select(a => new { a.Clave}).ToList().LastOrDefault();
             int folio = 1;
 
             if (ultimo != null)
@@ -191,7 +191,8 @@ namespace RecordFCS.Controllers
             foreach (var item in listaAtributos)
             {
                 string campo = "req_list_" + item.TipoAtributoID;
-                Int64 id = Convert.ToInt64(Request.Form[campo]);
+                string id_text = Request.Form[campo];
+                Int64 id = Convert.ToInt64(id_text);
                 switch (item.TipoAtributo.DatoCS)
                 {
                     case "TipoAdquisicionID":

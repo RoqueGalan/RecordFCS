@@ -30,7 +30,7 @@
         <div class="form-group">
             <label for="TipoAtributoID" class="control-label col-md-2">Filtro</label>
             <div class="col-md-10">
-                @Html.DropDownList("TipoAtributoID", null,"- SIN SELECCIONAR -", htmlAttributes: new { @class = "form-control SelectTipoAtributo" })
+                @Html.DropDownList("TipoAtributoID", null, "- SIN SELECCIONAR -", htmlAttributes: new { @class = "form-control SelectTipoAtributo" })
             </div>
         </div>
 
@@ -61,17 +61,25 @@
                 strSelecto += $(this)[0].value;
             });
 
-            var myUrl = '@Url.Action("RenderBuscarCampo", "Buscador")';
+            if (strSelecto.length) {
 
-            $.ajax({
-                url: myUrl,
-                type: "POST",
-                data: { idTipoAtributo: strSelecto },
-                success: function (result) {
-                    $("#renderCampoTipoAtributo").html(result);
-                    $("#Filtro").focus();
-                }
-            });
+                var myUrl = '@Url.Action("RenderBuscarCampo", "Buscador")';
+
+                $.ajax({
+                    url: myUrl,
+                    type: "POST",
+                    data: { idTipoAtributo: strSelecto },
+                    success: function (result) {
+                        $("#renderCampoTipoAtributo").html(result);
+                        $("#Filtro").focus();
+                    }
+                });
+            }
+            else {
+                $("#renderCampoTipoAtributo").html("");
+
+            }
+
         });
         return false;
     });
@@ -82,7 +90,8 @@
 
         var tipoAtributoID = "";
         var filtro = $("#Filtro").val();
-        var palabraExacta = $('input[name="PalabraExacta"]').bootstrapSwitch('state');
+
+        var palabraExacta = $('input[name="PalabraExacta"]').is(':checked') ? true : false;
 
         $("#TipoAtributoID option:selected").each(function () {
             tipoAtributoID += $(this)[0].value;

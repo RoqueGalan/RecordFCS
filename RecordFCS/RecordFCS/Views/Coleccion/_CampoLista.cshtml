@@ -35,7 +35,7 @@
     $(function(){
         $('#btnAgregar_' + @ViewBag.TipoAtributoID).on("click", function (e) {
             var txt_Filtro = $('#filtro_' + @ViewBag.TipoAtributoID).val();
-            var myUrl = '@Url.Action("AgregarValor", "ListaValor")';
+            var myUrl = '@Url.Action("AgregarValor", "Coleccion")';
             var chk_Aceptar = $('#aceptar_' + @ViewBag.TipoAtributoID).is(':checked') ? true : false;
             var idAtt = @ViewBag.TipoAtributoID;
             if(chk_Aceptar)

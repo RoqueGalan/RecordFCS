@@ -12,6 +12,8 @@ using System.Text;
 using System.Web.Security;
 using RecordFCS.Helpers.Seguridad;
 using Newtonsoft.Json;
+using System.Security.Cryptography;
+using System.IO;
 
 namespace RecordFCS.Controllers
 {
@@ -43,7 +45,6 @@ namespace RecordFCS.Controllers
         public ActionResult IniciarSesion([Bind(Include = "UserName,Password")] Usuario usuario)
         {
             //validar que usuario y contraseña existan
-
             if (db.Usuarios.Where(a => a.UserName == usuario.UserName && a.Password == usuario.Password).Count() == 1)
             {
                 //el usuario es correcto
@@ -67,7 +68,7 @@ namespace RecordFCS.Controllers
 
 
                 string encTicket = FormsAuthentication.Encrypt(authTicket);
-                HttpCookie faCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket) { Expires = authTicket.Expiration};
+                HttpCookie faCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encTicket) { Expires = authTicket.Expiration };
                 Response.Cookies.Add(faCookie);
 
 
@@ -150,10 +151,13 @@ namespace RecordFCS.Controllers
         [CustomAuthorize(permiso = "UsuarioCrear")]
         public ActionResult Crear()
         {
+
+            var pwd = "Record_2015";
+
             Usuario usuario = new Usuario()
             {
-                Password = "Record_2015",
-                ConfirmPassword = "Record_2015",
+                Password = pwd,
+                ConfirmPassword = pwd,
             };
 
             ViewBag.PassDefault = "Record_2015";
@@ -165,24 +169,20 @@ namespace RecordFCS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "UsuarioCrear")]
-        public ActionResult Crear([Bind(Include = "UsuarioID,UserName,Password,Nombre,Apellido,Correo,Status")] Usuario usuario)
+        public ActionResult Crear([Bind(Include = "UsuarioID,UserName,Password,Nombre,Apellido,Correo,Status,ConfirmPassword")] Usuario usuario)
         {
 
             if (usuario.Password != usuario.ConfirmPassword)
-            {
-                ModelState.AddModelError("ConfirmPassword", "La Contraseña no coincide");
-            }
+                            ModelState.AddModelError("ConfirmPassword", "La Contraseña no coincide");
+
+            if (db.Usuarios.Where(a => a.UserName == usuario.UserName).Count() > 0)
+                ModelState.AddModelError("UserName", "Ya existe un registro con este nombre. Intenta con otro.");
 
             if (ModelState.IsValid)
             {
-                //volver a revalidar, ya que hay error de validacion en el cliente
-                if (db.Usuarios.Where(a => a.UserName == usuario.UserName).Count() > 0)
-                {
-                    ModelState.AddModelError("UserName", "Ya existe un registro con este nombre. Intenta con otro.");
-                    return PartialView("_Crear", usuario);
-                }
+                
 
-                usuario.Status = true;
+
                 db.Usuarios.Add(usuario);
                 db.SaveChanges();
 
@@ -192,6 +192,9 @@ namespace RecordFCS.Controllers
             }
 
             ViewBag.PassDefault = "Record_2015";
+
+            usuario.Password = "";
+            usuario.ConfirmPassword = "";
 
             return PartialView("_Crear", usuario);
         }
@@ -232,7 +235,7 @@ namespace RecordFCS.Controllers
         }
 
         // GET: Usuario/Eliminar/5
-        [CustomAuthorize(permiso = "UsuarioElimininar")]
+        [CustomAuthorize(permiso = "UsuarioEliminar")]
         public ActionResult Eliminar(Int64? id)
         {
             if (id == null)
@@ -250,7 +253,7 @@ namespace RecordFCS.Controllers
         // POST: Usuario/Eliminar/5
         [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(permiso = "UsuarioElimininar")]
+        [CustomAuthorize(permiso = "UsuarioEliminar")]
         public ActionResult EliminarConfirmado(Int64 id)
         {
             string btnValue = Request.Form["accionx"];
@@ -339,6 +342,7 @@ namespace RecordFCS.Controllers
             string url = Url.Action("Index", "Home");
             return Json(new { success = true, url = url, modelo = "Usuario" });
         }
+
 
         protected override void Dispose(bool disposing)
         {

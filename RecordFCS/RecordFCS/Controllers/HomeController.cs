@@ -25,7 +25,15 @@ namespace RecordFCS.Controllers
 
             if (!string.IsNullOrWhiteSpace(mensaje))
             {
-                AlertaInfo(mensaje,true);
+
+                if (mensaje == "fin")
+                {
+                    AlertaInfo("Sesión terminada. Por favor, vuelve a iniciar sesión.");   
+                }
+                else
+                {
+                    AlertaInfo(mensaje, true);
+                }
             }
 
             return View();

@@ -192,7 +192,7 @@ namespace RecordFCS.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(permiso = "TipoAttEdit")]
-        public ActionResult Editar([Bind(Include = "TipoAtributoID,Nombre,NombreHTML,NombreID,Descripcion,DatoHTML,DatoCS,EsLista,Status,Buscador,BuscadorOrden")] TipoAtributo tipoAtributo)
+        public ActionResult Editar([Bind(Include = "TipoAtributoID,Nombre,NombreHTML,NombreID,Descripcion,DatoHTML,DatoCS,EsLista,Status,Buscador,BuscadorOrden,AntNombre")] TipoAtributo tipoAtributo)
         {
             if (ModelState.IsValid)
             {

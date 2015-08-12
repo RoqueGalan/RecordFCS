@@ -49,9 +49,10 @@
 @* *@
 <script type="text/javascript">
 
-    $("[name='PalabraExacta']").bootstrapSwitch();
 
-    $('input[name="PalabraExacta"]').on('switchChange.bootstrapSwitch', function (event, state) {
+
+
+    $('input[name="PalabraExacta"]').on('change', function (event, state) {
         if ($('#Filtro').val() != "") {
             buscarDatoAjax();
             $("#Filtro").focus();
@@ -63,18 +64,20 @@
     });
 
 
-    function buscarDatoAjax(text_busqueda, check_exacta) {
+    function buscarDatoAjax() {
         //logica para llamar la respectiva funcion:
 
         $.ajaxSetup({ cache: false });
 
         var myUrl = '@ViewBag.rutaAccion';
 
+        var palExacta = $('input[name="PalabraExacta"]').is(':checked') ? true : false;
+        var txtBusqueda = $("#Filtro").val();
 
         $.ajax({
             url: myUrl,
             type: 'POST',
-            data: { busqueda: $("#Filtro").val(), exacta: $('input[name="PalabraExacta"]').bootstrapSwitch('state') },
+            data: { busqueda: txtBusqueda, exacta: palExacta },
             success: function (result) {
                 $('#renderListaCoincidencias').html(result);
             }

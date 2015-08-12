@@ -244,6 +244,15 @@ a.carouselbody {
 }*/
 
 
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+
+
+
+
 .table-anidada {
     margin-bottom: 0;
 }

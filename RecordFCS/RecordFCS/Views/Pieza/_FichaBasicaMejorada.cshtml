@@ -238,7 +238,10 @@
                                         break;
 
                                     case "Ubicacion_Clave (OBRA)":
-                                    @Model.Ubicacion.Nombre
+                                        if (Model.UbicacionID != null)
+                                        {
+                                            @Model.Ubicacion.Nombre
+                                        }
                                         break;
 
 
