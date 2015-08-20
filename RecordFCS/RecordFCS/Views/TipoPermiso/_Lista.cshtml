@@ -23,7 +23,7 @@
         <th>
             @if (User.IsInRole("TipoPermisoCrear"))
             {
-                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear", "Crear", "TipoPermiso", null, htmlAttributes: new { data_modal = "", @class = "btn btn-success btn-xs pull-right TipoPermiso" })
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear", "Crear", "TipoPermiso", null, htmlAttributes: new { data_modal = "", @class = "btn btn-default btn-xs pull-right TipoPermiso" })
             }
         </th>
     </tr>
@@ -51,7 +51,7 @@
                     }
                     @if (User.IsInRole("TipoPermisoEliminar"))
                     {
-                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "TipoPermiso", routeValues: new { id = item.TipoPermisoID }, htmlAttributes: new { data_modal = "", @class = "btn btn-danger btn-xs TipoPermiso" })
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "TipoPermiso", routeValues: new { id = item.TipoPermisoID }, htmlAttributes: new { data_modal = "", @class = "btn btn-default btn-xs TipoPermiso" })
                     }
                 </div>
             </td>

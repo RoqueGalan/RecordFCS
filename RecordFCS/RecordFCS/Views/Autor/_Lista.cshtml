@@ -2,7 +2,7 @@
 @using PagedList.Mvc;
 @using RecordFCS.Helpers
 
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
 
 <div id="contentPager" class="text-center">
     @Html.PagedListPager(Model, pagina => Url.Action("Lista", new { pagina = pagina }))
@@ -22,7 +22,7 @@
         <th>
             @if (User.IsInRole("CatCrear"))
             {
-                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear", "Crear", "Autor", null, htmlAttributes: new { data_modal = "", @class = "btn btn-success pull-right Autor" })
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear", "Crear", "Autor", null, htmlAttributes: new { data_modal = "", @class = "btn btn-default pull-right Autor" })
             }
         </th>
     </tr>
@@ -59,7 +59,7 @@
                     }
                     @if (User.IsInRole("CatEliminar"))
                     {
-                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "Autor", routeValues: new { id = item.AutorID }, htmlAttributes: new { data_modal = "", @class = "btn btn-danger btn-xs Autor" })
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "Autor", routeValues: new { id = item.AutorID }, htmlAttributes: new { data_modal = "", @class = "btn btn-default btn-xs Autor" })
                     }
                 </div>
             </td>

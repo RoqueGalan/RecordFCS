@@ -2,7 +2,7 @@
 @using PagedList.Mvc;
 @using RecordFCS.Helpers
 
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
 
 <div id="contentPager" class="text-center">
     @Html.PagedListPager(Model, pagina => Url.Action("Lista", new { pagina = pagina }))
@@ -31,7 +31,7 @@
         <th>
             @if (User.IsInRole("UsuarioCrear"))
             {
-                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Nuevo Usuario", "Crear", "Usuario", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-success pull-right Usuario" })
+                @Html.NoEncodeActionLink("<span class='fa fa-plus'></span>", "Crear Nuevo Usuario", "Crear", "Usuario", null, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default pull-right Usuario" })
             }
         </th>
     </tr>
@@ -58,7 +58,7 @@
                 <div class="pull-right">
                     @if (User.IsInRole("UsuarioPermisosVer"))
                     {
-                        @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Config. Usuario", "Detalles", "Usuario", routeValues: new { id = item.UsuarioID }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-primary btn-xs" })
+                        @Html.NoEncodeActionLink("<span class='fa fa-gear'></span>", "Config. Usuario", "Detalles", "Usuario", routeValues: new { id = item.UsuarioID }, htmlAttributes: new { data_toggle = "tooltip", @class = "btn btn-default btn-xs" })
 
                     }
                     @if (User.IsInRole("UsuarioEdit"))
@@ -68,7 +68,7 @@
                     }
                     @if (User.IsInRole("UsuarioEliminar"))
                     {
-                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "Usuario", routeValues: new { id = item.UsuarioID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-danger btn-xs Usuario" })
+                        @Html.NoEncodeActionLink("<span class='fa fa-trash'></span>", "Eliminar", "Eliminar", "Usuario", routeValues: new { id = item.UsuarioID }, htmlAttributes: new { data_modal = "", data_toggle = "tooltip", @class = "btn btn-default btn-xs Usuario" })
 
                     }
                 </div>

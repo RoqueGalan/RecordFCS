@@ -49,7 +49,7 @@ input[type='submit'] {
 }
 
 .badge-success {
-    background-color: #43ac6a;
+    background-color: #bca57c;
 }
 
 .badge-info {
@@ -70,7 +70,7 @@ input[type='submit'] {
 
 /* TEXTO STATUS*/
 .text-True {
-    color: #43ac6a !important;
+    color: #bca57c !important;
 }
 
 .text-False {
@@ -104,11 +104,11 @@ input[type='submit'] {
 }
 
 .barra-primary {
-    background-color: #00addc !important;
+    background-color: #f5f7f5 !important;
 }
 
 .barraEstado-True {
-    background-color: #43ac6a !important;
+    background-color: #bca57c !important;
 }
 
 .barraEstado-False {
@@ -116,7 +116,7 @@ input[type='submit'] {
 }
 
 .barraEstado-success {
-    background-color: #43ac6a !important;
+    background-color: #bca57c !important;
 }
 
 .barraEstado-default {
@@ -194,23 +194,23 @@ input[type='submit'] {
 }
 
     .link.link-danger:hover {
-        color: #ff2400 !important;
+        color: #bca57c !important;
     }
 
     .link.link-warning:hover {
-        color: #ed8200 !important;
+        color: #bca57c !important;
     }
 
     .link.link-success:hover {
-        color: #12bd51 !important;
+        color: #bca57c !important;
     }
 
     .link.link-info:hover {
-        color: #00addc !important;
+        color: #bca57c !important;
     }
 
     .link.link-inverse:hover {
-        color: #000000 !important;
+        color: #bca57c !important;
     }
 
 .link-top {
@@ -521,8 +521,8 @@ footer {
 
     .panel-inverse > .panel-heading {
         color: #ffffff;
-        background-color: #333333;
-        border-color: #333333;
+        background-color: #bca57c;
+        border-color: #bca57c;
     }
 
         .panel-inverse > .panel-heading + .panel-collapse > .panel-body {
@@ -607,7 +607,7 @@ footer {
 
     .media-right.LRHijo:hover {
         color: white;
-        background-color: #43ac6a;
+        background-color: #bca57c;
     }
 
 
@@ -622,7 +622,7 @@ footer {
 
     .media-right.LTHijo:hover {
         color: white;
-        background-color: #ff2400;
+        background-color: #bca57c;
     }
 
 #MOLT {
