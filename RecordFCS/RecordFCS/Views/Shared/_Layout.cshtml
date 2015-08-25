@@ -12,18 +12,19 @@
     @Scripts.Render("~/bundles/jquery")
 </head>
 <body style="background-color: #ffffff;">
-    @*<div id="loadingAjax">
-            <div class="text-center">
-                <span class="fa fa-spin fa-spinner fa-4x"></span>
-                <br />
-                <span>Procesando solicitud</span>
-                <br />
-                <small>Por favor espere...</small>
-            </div>
-        </div>*@
+        @*<div id="loadingAjax">
+        <div class="text-center">
+            <span class="fa fa-spin fa-spinner fa-4x"></span>
+            <br />
+            <span>Procesando solicitud</span>
+            <br />
+            <small>Por favor espere...</small>
+        </div>
+    </div>*@
 
 
-    @Html.Partial("_Menu")
+            @Html.Partial("_Menu")
+     
 
 
     <div id="alertasDiv" class="notificacion clearfix">
@@ -34,10 +35,11 @@
         @RenderBody()
     </div>
 
-    <footer>
+
+    <footer> 
         <p class="text-center">
             <small class="pie">
-                &copy; @DateTime.Now.Year - <b>Record</b> - <i>Registro, Control y Documentación de Obra</i>
+               &copy; @DateTime.Now.Year - <b>Record</b> - <i>Registro, Control y Documentación de Obra</i>
             </small>
         </p>
     </footer>

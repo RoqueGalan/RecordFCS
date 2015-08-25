@@ -1,14 +1,16 @@
 ﻿body {
     padding-top: 5px;
     padding-bottom: 5px;
+    
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 25px;
-    padding-right: 25px;
-    padding-top: 25px;
+    
+    left: auto;
     background-color: #ffffff;
+    width:auto;
+  
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -381,13 +383,7 @@ table {
 
 /* CARRUSEL HOME*/
 
-#carrusel_home .item img {
-    z-index: 10;
-    height: 33em;
-    width: 100%;
-    position: relative;
-    background-color: #777;
-}
+
 
 
 
@@ -434,25 +430,24 @@ table {
 
 .logoFundacion {
     position: absolute;
-    z-index: 80;
-    background-color: rgba(255, 255, 255, 0.83);
-    border-top-left-radius: 1em;
-    border-bottom-left-radius: 1em;
+    z-index: auto;
+    background: #e6e6e6;
+    border-top-right-radius: 10em;
+    border-bottom-right-radius: 10em;
+    border-top-left-radius: 10em;
+    border-bottom-left-radius: 10em;
     top: auto;
-    bottom: 0.7em;
-    right: 0;
+    bottom:auto;
+    left: 20px;
+    opacity:0.6;
 }
 
-    .logoFundacion img {
-        width: 10.2em;
+
+
+
+ .logoFundacion img {
+        width: 4.5em;
     }
-
-
-
-
-
-
-
 
 .descHome {
     z-index: 100;
@@ -466,10 +461,24 @@ table {
 
 
 footer {
-    padding-top: 0.5em;
+    position: relative;
+    margin-top: auto;
+    margin-bottom:0 !important;
+    height: 10px; 
+    clear: both;
+    text-align: center; 
+    color: #000000;
 }
 
-
+ /*Media Queries*/
+ @media screen and (max-width: 400px) {
+   section.galeria div { 
+       margin: 0; 
+   }
+   section.galeria { 
+   padding: 0; 
+   }
+}
 
 /*LINEA VERTICAL*/
 .row.vertical-divider {

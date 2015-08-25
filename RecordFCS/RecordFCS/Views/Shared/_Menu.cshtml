@@ -1,6 +1,6 @@
 ﻿@using RecordFCS.Helpers
 
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+<nav id="menuUsuario" class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -10,10 +10,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-
-            @Html.NoEncodeActionLink("<font size='6'>R</font><font size='3'> E C O R D</font>", "Inicio de RECORD", "Index", "Home", null, htmlAttributes: new { data_toggle = "tooltip", @class = "navbar-brand" })
+            <div class="logoFundacion">
+                <img src="~/Content/img/home/carrusel/logo1.jpg" alt="Fundación Carlos Slim" class="imgSaludo" />
+            </div>
+           @*@Html.NoEncodeActionLink("<font size='6'>R</font><font size='3'> E C O R D</font>", "Inicio de RECORD", "Index", "Home", null, htmlAttributes: new { data_toggle = "tooltip", @class = "navbar-brand" })*@
 
         </div>
+      
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
